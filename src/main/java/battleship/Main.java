@@ -14,6 +14,9 @@ public class Main
     {
 		System.out.println("***  Battleship  ***");
 
+		PDFExporter.exportGameReport("relatorio_jogo.pdf", "Relatório de teste do jogo Batalha Naval.");
+
 		Tasks.menu();
+
     }
 }
