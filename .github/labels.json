@@ -11,5 +11,6 @@
   { "name": "type: BUG", "color": "B91C1C", "description": "Something isn't working" },
   { "name": "type: DOCUMENTATION", "color": "2563EB", "description": "Improvements or additions to documentation" },
   { "name": "type: ENHANCEMENT", "color": "A5F3FC", "description": "New feature or request" },
-  { "name": "type: QUESTION", "color": "D946EF", "description": "Further information is requested" }
+  { "name": "type: QUESTION", "color": "D946EF", "description": "Further information is requested" },
+  { "name": "Enhancement", "color": "a2eeef", "description": "New feature or request (exigido pelo guião da Ficha nº2, tarefa B7)" }
 ]
