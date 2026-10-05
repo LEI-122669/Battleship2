@@ -6,57 +6,57 @@
  */
 "use strict";
 const messages = {
-    enterTerm: "输入搜索词",
-    noResult: "未找到结果",
-    oneResult: "找到一个结果",
-    manyResults: "找到 {0} 个结果",
-    loading: "正在加载搜索索引...",
-    searching: "正在搜索...",
-    redirecting: "正在重定向到第一个结果...",
+    enterTerm: "Enter a search term",
+    noResult: "No results found",
+    oneResult: "Found one result",
+    manyResults: "Found {0} results",
+    loading: "Loading search index...",
+    searching: "Searching...",
+    redirecting: "Redirecting to first result...",
 }
 const categories = {
-    modules: "模块",
-    packages: "程序包",
-    types: "类和接口",
-    members: "成员",
-    searchTags: "搜索标记"
+    modules: "Modules",
+    packages: "Packages",
+    types: "Classes and Interfaces",
+    members: "Members",
+    searchTags: "Search Tags"
 };
 // Localized element descriptors must match values in enum IndexItem.Kind.
 const itemDesc = [
     // Members
-    ["{0} 中的枚举常量"],
-    ["{0}中的变量"],
-    ["{0}中的静态变量"],
-    ["{0}的构造器"],
-    ["{0} 中的元素"],
-    ["{0}中的方法"],
-    ["{0}中的静态方法"],
-    ["{0} 的记录组件"],
+    ["Enum constant in {0}"],
+    ["Variable in {0}"],
+    ["Static variable in {0}"],
+    ["Constructor for {0}"],
+    ["Element in {0}"],
+    ["Method in {0}"],
+    ["Static method in {0}"],
+    ["Record component of {0}"],
     // Types in upper and lower case
-    ["批注接口", "批注接口"],
-    ["枚举类",           "枚举类"],
-    ["接口",      "接口"],
-    ["记录类",    "记录类"],
-    ["类",          "类"],
-    ["异常错误类", "异常错误类"],
+    ["Annotation Interface", "annotation interface"],
+    ["Enum Class",           "enum class"],
+    ["Interface",      "interface"],
+    ["Record Class",    "record class"],
+    ["Class",          "class"],
+    ["Exception Class", "exception class"],
     // Tags
-    ["{0}中的搜索标记"],
-    ["{0} 中的系统属性"],
-    ["{0} 中的节"],
-    ["{0} 中的外部规范"],
+    ["Search tag in {0}"],
+    ["System property in {0}"],
+    ["Section in {0}"],
+    ["External specification in {0}"],
     // Other
-    ["概要页"],
+    ["Summary Page"],
 ];
-const mbrDesc = "成员";
-const clsDesc = "类"
-const pkgDesc = "程序包";
-const mdlDesc = "模块";
-const pkgDescLower = "程序包";
-const mdlDescLower = "模块";
-const tagDesc = "搜索标记";
-const inDesc = "{1}中的{0}";
-const descDesc = "说明";
-const linkLabel = "转至搜索页";
+const mbrDesc = "Member";
+const clsDesc = "Class"
+const pkgDesc = "Package";
+const mdlDesc = "Module";
+const pkgDescLower = "package";
+const mdlDescLower = "module";
+const tagDesc = "Search Tag";
+const inDesc = "{0} in {1}";
+const descDesc = "Description";
+const linkLabel = "Go to search page";
 const NO_MATCH = {};
 const MAX_RESULTS = 300;
 const UNICODE_LETTER = 0;

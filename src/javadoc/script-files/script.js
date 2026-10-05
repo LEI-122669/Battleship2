@@ -18,8 +18,8 @@ var sortDesc = "sort-desc";
 var tableTab = "table-tab";
 var activeTableTab = "active-table-tab";
 
-const linkIcon = "链接图标";
-const linkToSection = "链接到此节";
+const linkIcon = "Link icon";
+const linkToSection = "Link to this section";
 
 if (typeof hljs !== "undefined") {
     try {
