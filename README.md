@@ -1,7 +1,6 @@
 # Battleship2
 
-Simulador do jogo **Batalha Naval Quinhentista**, desenvolvido no ambito da unidade curricular de
-**Qualidade de Software** do **ISCTE-IUL**.
+Simulador do jogo **Batalha Naval Quinhentista**
 
 O jogo corre na consola. A nossa frota e a frota adversaria sao frotas de navios do seculo XVI
 (galeao, fragata, nau, caravela e barca), e cada rajada vale tres tiros.
@@ -16,8 +15,7 @@ O jogo corre na consola. A nossa frota e a frota adversaria sao frotas de navios
 | Apache Maven | 3.9 ou superior |
 | Git | qualquer versao recente |
 
-> O projeto **nao** se compila com `javac Main.java`. Usa Maven: e o Maven que resolve as
-> dependencias e produz o ficheiro executavel.
+
 
 ---
 
@@ -28,26 +26,14 @@ O jogo corre na consola. A nossa frota e a frota adversaria sao frotas de navios
 git clone https://github.com/LEI-122669/Battleship2.git
 cd Battleship2
 
-# correr os testes
-mvn clean test
-
-# empacotar (gera target/BattleshipGamePlayer-2.0.jar)
-mvn clean package
 ```
 
-O `maven-shade-plugin` produz um jar com todas as dependencias dentro, pelo que ha **dois** pontos
-de entrada possiveis.
+
 
 **1. Jogo na consola** (o que interessa para a Parte 1):
 
 ```bash
 java -cp target/BattleshipGamePlayer-2.0.jar battleship.Main
-```
-
-**2. Servidor REST** (Parte 2) - e o `mainClass` declarado no `pom.xml`:
-
-```bash
-java -jar target/BattleshipGamePlayer-2.0.jar
 ```
 
 ---
@@ -73,9 +59,7 @@ Depois de `gerafrota` ou `lefrota`, escrever uma rajada na consola, por exemplo:
 A1 B2 C3
 ```
 
-Cada rajada devolve um resumo em JSON com os campos `validShots`, `repeatedShots`,
-`outsideShots`, `missedShots`, `sunkBoats` e `hitsOnBoats`. **Este JSON e o protocolo da Parte 2
-e nao pode ser alterado.**
+
 
 ---
 
@@ -116,38 +100,4 @@ A documentacao Javadoc e gerada para a pasta `docs/` e publicada pelo **GitHub P
 
 ---
 
-## Estado do projeto
 
-**Implementado**
-
-- Motor do jogo: frotas, navios, orientacoes, marcacao de tiros e deteccao de navio afundado
-- Simulacao na consola com os comandos acima
-- Servidor REST (Parte 2) e respetivo controlador de jogos
-- Testes unitarios com JUnit 5 (`mvn clean test`)
-- Documentacao Javadoc publicada em `docs/`
-
-**Em desenvolvimento** (um ramo por funcionalidade, cada um com o respetivo *issue* e *pull request*)
-
-- Visualizacao grafica dos tabuleiros
-- Impressao das jogadas em PDF
-- Armazenamento das jogadas numa base de dados
-- Relogio com o tempo gasto em cada jogada
-
----
-
-## Como contribuir
-
-Cada funcionalidade vive no seu proprio ramo, com o numero de estudante no nome, e entra por
-*pull request* revisto por outro membro do grupo.
-
-```bash
-git checkout main
-git pull origin main
-git checkout -b <numero-de-estudante>-<funcionalidade>
-```
-
-Antes de abrir o *pull request*:
-
-1. `mvn clean test` tem de passar
-2. O *issue* correspondente tem de existir e estar etiquetado
-3. A descricao do *pull request* tem de referir o *issue*
