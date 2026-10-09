@@ -141,7 +141,7 @@
 			<groupId>com.formdev</groupId>
 			<artifactId>flatlaf</artifactId>
 			<version>${flatlaf.version}</version>
-		<!-- Biblioteca para geração de PDF (додано всередину dependencies) -->
+		<!-- Biblioteca para geração de PDF -->
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itextpdf</artifactId>
