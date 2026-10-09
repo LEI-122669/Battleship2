@@ -13,45 +13,45 @@
 	<url>https://github.com/britoeabreu/Battleship2.git</url>
 
 	<developers>
-	  <developer>
-		<id>mgoulao</id>
-		<name>Miguel Goulão</name>
-		<email>mgoul@fct.unl.pt</email>
-		<organization>FCT/UNL</organization>
-		<roles>
-		  <role>Product Owner</role>
-		</roles>
-	  </developer>
+		<developer>
+			<id>mgoulao</id>
+			<name>Miguel Goulão</name>
+			<email>mgoul@fct.unl.pt</email>
+			<organization>FCT/UNL</organization>
+			<roles>
+				<role>Product Owner</role>
+			</roles>
+		</developer>
 
-	  <developer>
-		<id>jose-vicente-reis</id>
-		<name>José Vicente Reis</name>
-		<email>Jose_Vicente_Reis@iscte-iul.pt</email>
-		<organization>Iscte-IUL</organization>
-		<roles>
-		  <role>Team Member</role>
-		</roles>
-	  </developer>
+		<developer>
+			<id>jose-vicente-reis</id>
+			<name>José Vicente Reis</name>
+			<email>Jose_Vicente_Reis@iscte-iul.pt</email>
+			<organization>Iscte-IUL</organization>
+			<roles>
+				<role>Team Member</role>
+			</roles>
+		</developer>
 
-	  <developer>
-		<id>adriano-lopes</id>
-		<name>Adriano Lopes</name>
-		<email>adriano.lopes@iscte-iul.pt</email>
-		<organization>Iscte-IUL</organization>
-		<roles>
-		  <role>Team Member</role>
-		</roles>
-	  </developer>
+		<developer>
+			<id>adriano-lopes</id>
+			<name>Adriano Lopes</name>
+			<email>adriano.lopes@iscte-iul.pt</email>
+			<organization>Iscte-IUL</organization>
+			<roles>
+				<role>Team Member</role>
+			</roles>
+		</developer>
 
-	  <developer>
-		<id>fernando-brito-abreu</id>
-		<name>Fernando Brito e Abreu</name>
-		<email>fba@iscte-iul.pt</email>
-		<organization>Iscte-IUL</organization>
-		<roles>
-		  <role>Scrum Master</role>
-		</roles>
-	  </developer>
+		<developer>
+			<id>fernando-brito-abreu</id>
+			<name>Fernando Brito e Abreu</name>
+			<email>fba@iscte-iul.pt</email>
+			<organization>Iscte-IUL</organization>
+			<roles>
+				<role>Scrum Master</role>
+			</roles>
+		</developer>
 	</developers>
 
 	<properties>
@@ -75,6 +75,7 @@
 
 		<jetbrains.annotations.version>26.1.0</jetbrains.annotations.version>
 
+		<flatlaf.version>3.7.2</flatlaf.version>
 	</properties>
 
 	<dependencies>
@@ -142,6 +143,18 @@
 			<version>2.2.224</version>
 		</dependency>
 
+		<!-- Source: https://mvnrepository.com/artifact/com.formdev/flatlaf -->
+		<dependency>
+			<groupId>com.formdev</groupId>
+			<artifactId>flatlaf</artifactId>
+			<version>${flatlaf.version}</version>
+		</dependency>
+		<!-- Biblioteca para geração de PDF -->
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itextpdf</artifactId>
+			<version>5.5.13.3</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -185,6 +198,10 @@
 					<includes>
 						<include>**/*Test.java</include>
 					</includes>
+					<!-- Os testes da vista grafica nao devem abrir janelas nem depender de um ecra. -->
+					<systemPropertyVariables>
+						<java.awt.headless>true</java.awt.headless>
+					</systemPropertyVariables>
 				</configuration>
 			</plugin>
 			<plugin>

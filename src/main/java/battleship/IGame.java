@@ -12,6 +12,13 @@ import java.util.Scanner;
 public interface IGame
 {
 	/**
+	 * Generates a detailed text report containing game statistics and the full history of moves.
+	 *
+	 * @return a formatted string containing game statistics and shot history.
+	 */
+	String generateReport();
+
+	/**
 	 * Simulates a random enemy firing action on the game board.
 	 *
 	 * @return a {@code String} indicating the result of the firing action, such as details about a hit, a miss, or other outcomes

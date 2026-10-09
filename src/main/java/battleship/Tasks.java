@@ -36,6 +36,8 @@ public class Tasks {
 	private static final String SIMULA = "simula";
 	private static final String HISTORICO = "historico";
 	private static final String WINNER_ENEMY = "INIMIGO";
+	private static final String JANELA = "janela";
+	private static final String PDF = "pdf";
 
 	/**
 	 * This task also tests the fighting element of a round of three shots
@@ -56,11 +58,13 @@ public class Tasks {
 					myFleet = Fleet.createRandom();
 					game = newGame(myFleet, database);
 					game.printMyBoard(false, true);
+					refreshBoardView(game);
 					break;
 				case LEFROTA:
 					myFleet = buildFleet(in);
 					game = newGame(myFleet,database);
 					game.printMyBoard(false, true);
+					refreshBoardView(game);
 					break;
 				case STATUS:
 					if (myFleet != null)
@@ -78,9 +82,18 @@ public class Tasks {
 
 						if (game.getRemainingShips() == 0) {
 							database.finishGame(game.getGameId(), WINNER_ENEMY, game);
+							PDFExporter.exportGameReport("relatorio_jogo.pdf", ((Game) game).generateReport());
 							game.over();
 							System.exit(0);
 						}
+					}
+					break;
+				case PDF:
+					if (game != null) {
+						String reportContent = game.generateReport();
+						PDFExporter.exportGameReport("relatorio_jogo.pdf", reportContent);
+					} else {
+						System.out.println("Nenhum jogo em andamento! Crie ou leia uma frota primeiro.");
 					}
 					break;
 				case SIMULA:
@@ -98,6 +111,7 @@ public class Tasks {
 
 						if (game.getRemainingShips() == 0) {
 							database.finishGame(game.getGameId(), WINNER_ENEMY, game);
+							PDFExporter.exportGameReport("relatorio_jogo.pdf", ((Game) game).generateReport());
 							game.over();
 							System.exit(0);
 						}
@@ -112,6 +126,12 @@ public class Tasks {
 					printHistory(database, in.next());
 					break;
 
+				case JANELA:
+					if (myFleet == null)
+						System.out.println("Gere ou carregue uma frota primeiro ('" + GERAFROTA + "' ou '" + LEFROTA + "').");
+					else
+						BoardView.show(myFleet, game.getAlienMoves(), game.getAlienFleet(), game.getMyMoves());
+					break;
                 case AJUDA:
                     menuHelp();
                     break;
@@ -122,6 +142,20 @@ public class Tasks {
 			command = in.next();
 		}
 		System.out.println(GOODBYE_MESSAGE);
+	}
+
+	/**
+	 * Atualiza a vista gráfica com o estado atual do jogo.
+	 *
+	 * <p>Se a janela ainda não tiver sido pedida, esta operação não faz nada — o custo de a
+	 * chamar a cada jogada é desprezável.</p>
+	 *
+	 * @param game o jogo em curso, ou {@code null} se ainda não existir
+	 */
+	private static void refreshBoardView(IGame game) {
+		if (game == null)
+			return;
+		BoardView.update(game.getMyFleet(), game.getAlienMoves(), game.getAlienFleet(), game.getMyMoves());
 	}
 
 	/**
@@ -138,7 +172,9 @@ public class Tasks {
 		System.out.println("- " + SIMULA + ": Simula um jogo completo.");
 		System.out.println("- " + TIROS + ": Lista os tiros válidos realizados (* = tiro em navio, o = tiro na água)");
 		System.out.println("- " + HISTORICO + " <id>: Mostra as jogadas guardadas de um jogo.");
+		System.out.println("- " + JANELA + ": Abre a janela gráfica com o tabuleiro do jogador.");
 		System.out.println("- " + DESISTIR + ": Encerra o jogo.");
+		System.out.println("- " + PDF + ": Exporta o relatório das jogadas para PDF.");
 		System.out.println("===============================================================");
 	}
 
