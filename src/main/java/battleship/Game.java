@@ -452,4 +452,37 @@ public class Game implements IGame
 			System.out.println("| Maldito sejas, Java Sparrow, eu voltarei, glub glub glub ... |");
 			System.out.println("+--------------------------------------------------------------+");
 	}
+
+	/**
+	 * Generates a detailed text report containing current game statistics
+	 * (remaining ships, hits, sunk ships, invalid shots, and repeated shots)
+	 * and the complete history of alien moves/shots fired during the session.
+	 *
+	 * @return A formatted {@code String} containing the full game statistics
+	 *         and shot history, ready to be exported to PDF.
+	 */
+	public String generateReport() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("ESTATÍSTICAS DO JOGO:\n");
+		sb.append("- Navios Restantes: ").append(getRemainingShips()).append("\n");
+		sb.append("- Tiros Certeiros (Hits): ").append(getHits()).append("\n");
+		sb.append("- Navios Afundados: ").append(getSunkShips()).append("\n");
+		sb.append("- Tiros Inválidos: ").append(getInvalidShots()).append("\n");
+		sb.append("- Tiros Repetidos: ").append(getRepeatedShots()).append("\n\n");
+
+		sb.append("IMPRESSÃO DAS JOGADAS (HISTÓRICO DE DISPAROS):\n");
+		if (alienMoves.isEmpty()) {
+			sb.append("Nenhuma jogada realizada até o momento.\n");
+		} else {
+			for (IMove move : alienMoves) {
+				sb.append("Rada/Jogada #").append(move.getNumber()).append(": ");
+				for (IPosition pos : move.getShots()) {
+					sb.append(pos.getClassicRow()).append(pos.getClassicColumn()).append(" ");
+				}
+				sb.append("\n");
+			}
+		}
+		return sb.toString();
+	}
+
 }
