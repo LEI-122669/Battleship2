@@ -33,6 +33,7 @@ public class Tasks {
 	private static final String STATUS = "estado";
 	private static final String SIMULA = "simula";
 	private static final String JANELA = "janela";
+	private static final String PDF = "pdf";
 
 	/**
 	 * This task also tests the fighting element of a round of three shots
@@ -76,9 +77,18 @@ public class Tasks {
 						game.printMyBoard(true, false);
 
 						if (game.getRemainingShips() == 0) {
+							PDFExporter.exportGameReport("relatorio_jogo.pdf", ((Game) game).generateReport());
 							game.over();
 							System.exit(0);
 						}
+					}
+					break;
+				case PDF:
+					if (game != null) {
+						String reportContent = game.generateReport();
+						PDFExporter.exportGameReport("relatorio_jogo.pdf", reportContent);
+					} else {
+						System.out.println("Nenhum jogo em andamento! Crie ou leia uma frota primeiro.");
 					}
 					break;
 				case SIMULA:
@@ -95,6 +105,7 @@ public class Tasks {
 						}
 
 						if (game.getRemainingShips() == 0) {
+							PDFExporter.exportGameReport("relatorio_jogo.pdf", ((Game) game).generateReport());
 							game.over();
 							System.exit(0);
 						}
@@ -151,6 +162,7 @@ public class Tasks {
 		System.out.println("- " + TIROS + ": Lista os tiros válidos realizados (* = tiro em navio, o = tiro na água)");
 		System.out.println("- " + JANELA + ": Abre a janela gráfica com o tabuleiro do jogador.");
 		System.out.println("- " + DESISTIR + ": Encerra o jogo.");
+		System.out.println("- " + PDF + ": Exporta o relatório das jogadas para PDF.");
 		System.out.println("===============================================================");
 	}
 	/**
