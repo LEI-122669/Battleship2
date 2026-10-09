@@ -51,6 +51,7 @@ java -cp target/BattleshipGamePlayer-2.0.jar battleship.Main
 | `tiros` | Lista os tiros validos ja realizados |
 | `ajuda` | Mostra a lista de comandos |
 | `desisto` | Termina o programa |
+| `pdf` | Cria impressão das jogadas em pdf |
 
 Depois de `gerafrota` ou `lefrota`, escrever uma rajada na consola, por exemplo:
 
