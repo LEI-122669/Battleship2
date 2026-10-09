@@ -74,6 +74,8 @@
 		<allure.version>2.31.0</allure.version>
 
 		<jetbrains.annotations.version>26.1.0</jetbrains.annotations.version>
+
+		<flatlaf.version>3.7.2</flatlaf.version>
 	</properties>
 
 	<dependencies>
@@ -134,7 +136,12 @@
 			<scope>compile</scope>
 		</dependency>
 
-		<!-- Biblioteca para geração de PDF (додано всередину dependencies) -->
+		<!-- Source: https://mvnrepository.com/artifact/com.formdev/flatlaf -->
+		<dependency>
+			<groupId>com.formdev</groupId>
+			<artifactId>flatlaf</artifactId>
+			<version>${flatlaf.version}</version>
+		<!-- Biblioteca para geração de PDF -->
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itextpdf</artifactId>
@@ -183,6 +190,10 @@
 					<includes>
 						<include>**/*Test.java</include>
 					</includes>
+					<!-- Os testes da vista grafica nao devem abrir janelas nem depender de um ecra. -->
+					<systemPropertyVariables>
+						<java.awt.headless>true</java.awt.headless>
+					</systemPropertyVariables>
 				</configuration>
 			</plugin>
 			<plugin>

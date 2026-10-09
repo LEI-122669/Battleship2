@@ -27,18 +27,9 @@ public class Game implements IGame
 		assert fleet != null;
 		assert moves != null;
 
-		char[][] map = new char[BOARD_SIZE][BOARD_SIZE];
+		char[][] map = buildMap(fleet, show_shots ? moves : null);
 
-		for (int r = 0; r < BOARD_SIZE; r++)
-			for (int c = 0; c < BOARD_SIZE; c++)
-				map[r][c] = EMPTY_MARKER;
-
-		printShips(fleet, map);
-
-		if (show_shots)
-			printBoardShots(moves, map);
-
-		printBoardFrame(map);
+		System.out.print(renderBoard(map));
 
 		if (showLegend) {
 			System.out.println("          LEGENDA");
@@ -48,7 +39,78 @@ public class Game implements IGame
 		System.out.println();
 	}
 
-	private static void printShips(IFleet fleet, char[][] map) {
+	/**
+	 * Constroi a matriz de marcadores do tabuleiro.
+	 *
+	 * <p>Esta e a unica fonte de verdade da marcacao do tabuleiro: e usada pela vista de consola
+	 * ({@link #printBoard}) e pela vista grafica ({@link BoardView}), para que as duas
+	 * representem sempre exatamente a mesma informacao.</p>
+	 *
+	 * @param fleet a frota a representar; se for {@code null} o tabuleiro fica so com agua
+	 * @param moves as jogadas cujos tiros devem ser sobrepostos ao tabuleiro, ou {@code null}
+	 *              para nao mostrar tiros
+	 * @return uma matriz {@code BOARD_SIZE x BOARD_SIZE} de marcadores
+	 */
+	public static char[][] buildMap(IFleet fleet, List<IMove> moves) {
+
+		char[][] map = new char[BOARD_SIZE][BOARD_SIZE];
+
+		for (int r = 0; r < BOARD_SIZE; r++)
+			for (int c = 0; c < BOARD_SIZE; c++)
+				map[r][c] = EMPTY_MARKER;
+
+		if (fleet != null)
+			markShips(fleet, map);
+
+		if (moves != null)
+			markShots(moves, map);
+
+		return map;
+	}
+
+	/**
+	 * Desenha a matriz de marcadores em forma de texto, com o mesmo aspeto que a consola usa.
+	 *
+	 * <p>O texto devolvido inclui a linha em branco inicial, o eixo das colunas (1..10), o eixo
+	 * das linhas (A..J) e termina com uma mudanca de linha. E, por isso, exatamente o que
+	 * {@link #printBoard} escreve no ecra.</p>
+	 *
+	 * @param map a matriz de marcadores devolvida por {@link #buildMap}
+	 * @return o tabuleiro em forma de texto
+	 */
+	public static String renderBoard(char[][] map) {
+
+		assert map != null;
+
+		StringBuilder out = new StringBuilder();
+
+		out.append(System.lineSeparator());
+		out.append("    ");
+		for (int col = 0; col < BOARD_SIZE; col++)
+			out.append(" ").append(col + 1);
+		out.append(System.lineSeparator());
+
+		out.append("   +-");
+		for (int col = 0; col < BOARD_SIZE; col++)
+			out.append("--");
+		out.append("+").append(System.lineSeparator());
+
+		for (int row = 0; row < BOARD_SIZE; row++) {
+			out.append(" ").append(new Position(row, 0).getClassicRow()).append(" |");
+			for (int col = 0; col < BOARD_SIZE; col++)
+				out.append(" ").append(map[row][col]);
+			out.append(" |").append(System.lineSeparator());
+		}
+
+		out.append("   +");
+		for (int col = 0; col < BOARD_SIZE; col++)
+			out.append("--");
+		out.append("-+").append(System.lineSeparator());
+
+		return out.toString();
+	}
+
+	private static void markShips(IFleet fleet, char[][] map) {
 		for (IShip ship : fleet.getShips()) {
 			for (IPosition ship_pos : ship.getPositions())
 				map[ship_pos.getRow()][ship_pos.getColumn()] = SHIP_MARKER;
@@ -58,7 +120,7 @@ public class Game implements IGame
 		}
 	}
 
-	private static void printBoardShots(List<IMove> moves, char[][] map) {
+	private static void markShots(List<IMove> moves, char[][] map) {
 		for (IMove move : moves)
 			for (IPosition shot : move.getShots()) {
 				if (shot.isInside()){
@@ -70,35 +132,6 @@ public class Game implements IGame
 						map[row][col] = SHOT_WATER_MARKER;
 				}
 			}
-	}
-
-	private static void printBoardFrame(char[][] map) {
-		System.out.println();
-		System.out.print("    ");
-		for (int col = 0; col < BOARD_SIZE; col++) {
-			System.out.print(" " + (col + 1));
-		}
-		System.out.println();
-
-		System.out.print("   +-");
-		for (int col = 0; col < BOARD_SIZE; col++) {
-			System.out.print("--");
-		}
-		System.out.println("+");
-
-		for (int row = 0; row < BOARD_SIZE; row++) {
-			Position pos = new Position(row, 0);
-			char rowLabel = pos.getClassicRow();
-			System.out.print(" " + rowLabel + " |");
-			for (int col = 0; col < BOARD_SIZE; col++)
-				System.out.print(" " + map[row][col]);
-			System.out.println(" |");
-		}
-
-		System.out.print("   +");
-		for (int col = 0; col < BOARD_SIZE; col++)
-			System.out.print("--");
-		System.out.println("-+");
 	}
 
 	/**
@@ -150,11 +183,16 @@ public class Game implements IGame
 	public static final int BOARD_SIZE = 10;
 	public static final int NUMBER_SHOTS = 3;
 
-	private static final char EMPTY_MARKER = '.';
-	private static final char SHIP_MARKER = '#';
-	private static final char SHOT_SHIP_MARKER = '*';
-	private static final char SHOT_WATER_MARKER = 'o';
-	private static final char SHIP_ADJACENT_MARKER = '-';
+	/** Marca de água ainda nao atingida. */
+	public static final char EMPTY_MARKER = '.';
+	/** Marca de posicao ocupada por navio ainda a flutuar. */
+	public static final char SHIP_MARKER = '#';
+	/** Marca de tiro certeiro num navio. */
+	public static final char SHOT_SHIP_MARKER = '*';
+	/** Marca de tiro na água. */
+	public static final char SHOT_WATER_MARKER = 'o';
+	/** Marca de posicao adjacente a um navio afundado. */
+	public static final char SHIP_ADJACENT_MARKER = '-';
 
 	//------------------------------------------------------------------
 	private final IFleet myFleet;
@@ -355,6 +393,109 @@ public class Game implements IGame
 		alienMoves.add(move);
 
 		moveNumber++;
+
+		// Se a vista grafica estiver aberta, refletir imediatamente o resultado da rajada.
+		notifyBoardChanged();
+	}
+
+	/**
+	 * Regista uma jogada de ataque contra a frota adversaria.
+	 *
+	 * <p>Os tiros sao resolvidos contra os navios de {@link #getAlienFleet()} e a jogada e
+	 * guardada em {@link #getMyMoves()}, pelo que passa a estar disponivel para a grelha de
+	 * ataque da vista grafica.</p>
+	 *
+	 * <p>Nota: {@link #fireShots(List)} continua a representar os tiros que o adversario dispara
+	 * contra a nossa frota. Os dois metodos coexistem porque representam os dois sentidos do
+	 * jogo e alimentam listas diferentes.</p>
+	 *
+	 * @param shots as posicoes onde disparamos; tem de ter exatamente {@code NUMBER_SHOTS}
+	 *              posicoes
+	 * @return a jogada registada
+	 * @throws IllegalArgumentException se o numero de tiros for diferente de {@code NUMBER_SHOTS}
+	 */
+	public IMove fireShotsAtAlienFleet(List<IPosition> shots)
+	{
+		assert shots != null;
+
+		if (shots.size() != NUMBER_SHOTS) {
+			throw new IllegalArgumentException("Must fire exactly " + NUMBER_SHOTS + " shots per move.");
+		}
+
+		List<ShotResult> shotResults = new ArrayList<ShotResult>();
+		List<IPosition> alreadyShot = new ArrayList<IPosition>();
+		for (IPosition pos : shots) {
+			shotResults.add(resolveShotOn(alienFleet, pos, alreadyShot.contains(pos)));
+			alreadyShot.add(pos);
+		}
+
+		Move move = new Move(moveNumber, shots, shotResults);
+
+		myMoves.add(move);
+
+		moveNumber++;
+
+		notifyBoardChanged();
+
+		return move;
+	}
+
+	/**
+	 * Resolve um tiro contra uma frota, sem alterar os contadores da nossa propria defesa.
+	 *
+	 * @param targetFleet a frota visada
+	 * @param pos         a posicao visada
+	 * @param isRepeated  verdadeiro se o tiro repetir uma posicao da mesma jogada
+	 * @return o resultado do tiro
+	 */
+	private ShotResult resolveShotOn(IFleet targetFleet, IPosition pos, boolean isRepeated) {
+
+		assert targetFleet != null;
+		assert pos != null;
+
+		if (!pos.isInside())
+			return new ShotResult(false, false, null, false);
+
+		if (isRepeated || repeatedShotOn(pos))
+			return new ShotResult(true, true, null, false);
+
+		IShip ship = targetFleet.shipAt(pos);
+		if (ship == null)
+			return new ShotResult(true, false, null, false);
+
+		ship.shoot(pos);
+		return new ShotResult(true, false, ship, !ship.stillFloating());
+	}
+
+	/**
+	 * Verifica se uma posicao ja foi visada numa jogada de ataque anterior.
+	 *
+	 * @param pos a posicao a verificar
+	 * @return verdadeiro se a posicao ja tiver sido visada
+	 */
+	private boolean repeatedShotOn(IPosition pos) {
+
+		assert pos != null;
+
+		for (IMove move : myMoves)
+			if (move.getShots().contains(pos))
+				return true;
+		return false;
+	}
+
+	/**
+	 * Avisa a vista grafica de que o tabuleiro mudou.
+	 *
+	 * <p>A vista grafica e opcional: em ambiente sem ecra, ou se a janela nunca tiver sido
+	 * pedida, esta operacao nao faz nada. Qualquer falha da interface grafica e isolada para
+	 * nunca interromper o jogo na consola.</p>
+	 */
+	private void notifyBoardChanged() {
+		try {
+			BoardView.update(myFleet, alienMoves, alienFleet, myMoves);
+		} catch (RuntimeException | LinkageError e) {
+			// A janela grafica nunca pode comprometer a jogabilidade na consola.
+		}
 	}
 
 	/**
