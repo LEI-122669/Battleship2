@@ -206,6 +206,8 @@ public class Game implements IGame
 	private Integer countHits;
 	private Integer countSinks;
 	private int moveNumber;
+	private GameDatabase database;
+	private String gameId;
 
 	//------------------------------------------------------------------
 	public Game(IFleet myFleet)
@@ -223,6 +225,17 @@ public class Game implements IGame
 		this.countHits = 0;
 		this.countSinks = 0;
 	}
+	public void setDatabase(GameDatabase database, String gameId)
+	{
+		this.database = database;
+		this.gameId = gameId;
+	}
+
+	public String getGameId()
+	{
+		return gameId;
+	}
+
 
 	@Override
 	public IFleet getMyFleet()
@@ -391,6 +404,8 @@ public class Game implements IGame
 		move.processEnemyFire(true);
 
 		alienMoves.add(move);
+		if (database != null)
+			database.saveMove(gameId, moveNumber, shots, shotResults);
 
 		moveNumber++;
 

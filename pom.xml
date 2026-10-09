@@ -136,6 +136,13 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!-- H2 Database: base de dados embebida (JDBC) para guardar jogos e jogadas -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>2.2.224</version>
+		</dependency>
+
 		<!-- Source: https://mvnrepository.com/artifact/com.formdev/flatlaf -->
 		<dependency>
 			<groupId>com.formdev</groupId>

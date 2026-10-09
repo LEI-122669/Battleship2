@@ -5,6 +5,8 @@ import java.util.Scanner;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * The type Tasks.
@@ -32,6 +34,8 @@ public class Tasks {
 	private static final String MAPA = "mapa";
 	private static final String STATUS = "estado";
 	private static final String SIMULA = "simula";
+	private static final String HISTORICO = "historico";
+	private static final String WINNER_ENEMY = "INIMIGO";
 	private static final String JANELA = "janela";
 	private static final String PDF = "pdf";
 
@@ -39,9 +43,9 @@ public class Tasks {
 	 * This task also tests the fighting element of a round of three shots
 	 */
 	public static void menu() {
-
+		Game game = null;
+		GameDatabase database = new GameDatabase();
 		IFleet myFleet = null;
-		IGame game = null;
 		menuHelp();
 
 		System.out.print("> ");
@@ -52,13 +56,13 @@ public class Tasks {
 			switch (command) {
 				case GERAFROTA:
 					myFleet = Fleet.createRandom();
-					game = new Game(myFleet);
+					game = newGame(myFleet, database);
 					game.printMyBoard(false, true);
 					refreshBoardView(game);
 					break;
 				case LEFROTA:
 					myFleet = buildFleet(in);
-					game = new Game(myFleet);
+					game = newGame(myFleet,database);
 					game.printMyBoard(false, true);
 					refreshBoardView(game);
 					break;
@@ -77,6 +81,7 @@ public class Tasks {
 						game.printMyBoard(true, false);
 
 						if (game.getRemainingShips() == 0) {
+							database.finishGame(game.getGameId(), WINNER_ENEMY, game);
 							PDFExporter.exportGameReport("relatorio_jogo.pdf", ((Game) game).generateReport());
 							game.over();
 							System.exit(0);
@@ -105,6 +110,7 @@ public class Tasks {
 						}
 
 						if (game.getRemainingShips() == 0) {
+							database.finishGame(game.getGameId(), WINNER_ENEMY, game);
 							PDFExporter.exportGameReport("relatorio_jogo.pdf", ((Game) game).generateReport());
 							game.over();
 							System.exit(0);
@@ -115,6 +121,11 @@ public class Tasks {
 					if (game != null)
 						game.printMyBoard(true, true);
 					break;
+
+				case HISTORICO:
+					printHistory(database, in.next());
+					break;
+
 				case JANELA:
 					if (myFleet == null)
 						System.out.println("Gere ou carregue uma frota primeiro ('" + GERAFROTA + "' ou '" + LEFROTA + "').");
@@ -160,10 +171,32 @@ public class Tasks {
 		System.out.println("- " + RAJADA + ": Realiza uma rajada de disparos.");
 		System.out.println("- " + SIMULA + ": Simula um jogo completo.");
 		System.out.println("- " + TIROS + ": Lista os tiros válidos realizados (* = tiro em navio, o = tiro na água)");
+		System.out.println("- " + HISTORICO + " <id>: Mostra as jogadas guardadas de um jogo.");
 		System.out.println("- " + JANELA + ": Abre a janela gráfica com o tabuleiro do jogador.");
 		System.out.println("- " + DESISTIR + ": Encerra o jogo.");
 		System.out.println("- " + PDF + ": Exporta o relatório das jogadas para PDF.");
 		System.out.println("===============================================================");
+	}
+
+	static Game newGame(IFleet fleet, GameDatabase database) {
+		Game game = new Game(fleet);
+		String gameId = UUID.randomUUID().toString();
+		database.saveGame(gameId, "consola");
+		game.setDatabase(database, gameId);
+		System.out.println("Jogo guardado com o id: " + gameId);
+		return game;
+	}
+
+	static void printHistory(GameDatabase database, String gameId) {
+		if (!database.gameExists(gameId)) {
+			System.out.println("Não existe nenhum jogo com o id " + gameId);
+			return;
+		}
+		List<String> moves = database.findMoves(gameId);
+		if (moves.isEmpty())
+			System.out.println("O jogo " + gameId + " ainda não tem jogadas.");
+		for (String line : moves)
+			System.out.println(line);
 	}
 	/**
 	 * This operation allows the build up of a fleet, given user data
