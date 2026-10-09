@@ -3,6 +3,7 @@ package restserver;
 import battleship.Fleet;
 import battleship.Game;
 import battleship.IGame;
+import battleship.MoveClock;
 
 /**
  * Holds all state for one active game between the AI opponent and a student player.
@@ -41,6 +42,8 @@ public class GameSession {
 	/** "AI_WINS" or "STUDENT_WINS" — set when gameOver becomes true. */
 	private String winner;
 
+	private final MoveClock moveClock;
+
 	// -------------------------------------------------------------------------
 
 	public GameSession(String gameId, String playerName, String callbackUrl) {
@@ -51,6 +54,8 @@ public class GameSession {
 		this.shotsPerTurn = Game.NUMBER_SHOTS;
 		this.gameOver    = false;
 		this.winner      = null;
+		this.moveClock = new MoveClock();
+		this.moveClock.start();
 	}
 
 	// ── Getters ──────────────────────────────────────────────────────────────
@@ -62,6 +67,7 @@ public class GameSession {
 	public int    getShotsPerTurn(){ return shotsPerTurn; }
 	public boolean isGameOver()    { return gameOver; }
 	public String getWinner()      { return winner; }
+	public long getMoveTimeMillis() { return moveClock.getElapsedMilliseconds(); }
 
 	// ── State transitions ────────────────────────────────────────────────────
 
@@ -74,4 +80,17 @@ public class GameSession {
 		this.gameOver = true;
 		this.winner   = "STUDENT_WINS";
 	}
+
+	public void stopMoveClock() {
+		moveClock.stop();
+	}
+
+	public void startMoveClock() {
+		moveClock.start();
+	}
+
+	public boolean isMoveClockRunning() {
+		return moveClock.isRunning();
+	}
+
 }

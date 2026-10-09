@@ -98,6 +98,7 @@ public class GameController {
 		if (session.isGameOver()) {
 			return error(HttpStatus.GONE, "Game " + gameId + " is already over. Winner: " + session.getWinner());
 		}
+		session.stopMoveClock();
 
 		// ── 2. Validate incoming shots ───────────────────────────────────────
 		if (request.shots == null || request.shots.size() != Game.NUMBER_SHOTS) {
@@ -119,6 +120,12 @@ public class GameController {
 		IGame game = session.getGame();
 		ShotResponse m1bResponse = evaluateShots(positions, game, session);
 
+		Move lastMove =
+				(Move) game.getAlienMoves()
+						.get(game.getAlienMoves().size() - 1);
+
+		lastMove.setDurationMillis(session.getMoveTimeMillis());
+
 		// ── 5. Check if student won (all AI ships sunk) ──────────────────────
 		if (game.getRemainingShips() == 0) {
 			session.markStudentWins();
@@ -137,6 +144,10 @@ public class GameController {
 			// Callback failed — warn but don't crash the student's turn
 			System.err.printf("[%s] WARNING: callback to '%s' failed. AI shots skipped.%n",
 					gameId, session.getCallbackUrl());
+		}
+
+		else {
+			session.startMoveClock();
 		}
 
 		// ── 7. Return m1b to student ─────────────────────────────────────────
@@ -187,6 +198,8 @@ public class GameController {
 		response.shipsRemaining = game.getRemainingShips();
 		response.gameStatus    = "ONGOING";
 		response.winner        = null;
+		response.moveTimeMillis = session.getMoveTimeMillis();
+
 		return response;
 	}
 

@@ -331,7 +331,7 @@ public class Game implements IGame
 	 * @throws IllegalArgumentException if the list of shots is null, contains an invalid
 	 *                                  number of positions, or includes duplicate positions.
 	 */
-	public void fireShots(List<IPosition> shots)
+	public Move fireShots(List<IPosition> shots)
 	{
 		assert shots != null;
 
@@ -353,8 +353,9 @@ public class Game implements IGame
 		move.processEnemyFire(true);
 
 		alienMoves.add(move);
-
 		moveNumber++;
+
+		return move;
 	}
 
 	/**

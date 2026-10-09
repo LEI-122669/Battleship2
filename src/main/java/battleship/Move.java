@@ -19,12 +19,14 @@ public class Move implements IMove {
 	private final int number;
 	private final List<IPosition> shots;
 	private final List<IGame.ShotResult> shotResults;
+	private long durationMillis;
 
 	//-------------------------------------------------------------------
 	public Move(int moveNumber, List<IPosition> moveShots, List<IGame.ShotResult> moveResults) {
 		this.number = moveNumber;
 		this.shots = moveShots;
 		this.shotResults = moveResults;
+		this.durationMillis = 0;
 	}
 
 	@Override
@@ -49,6 +51,10 @@ public class Move implements IMove {
 	@Override
 	public List<IGame.ShotResult> getShotResults() {
 		return this.shotResults;
+	}
+
+	public long getDurationMillis() {
+		return durationMillis;
 	}
 
 	/**
@@ -202,4 +208,9 @@ public class Move implements IMove {
 		// Retornar o JSON
 		return jsonString;
 	}
+
+	public void setDurationMillis(long durationMillis) {
+		this.durationMillis = durationMillis;
+	}
+
 }

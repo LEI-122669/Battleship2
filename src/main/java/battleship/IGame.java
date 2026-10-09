@@ -31,7 +31,7 @@ public interface IGame
 	 *
 	 * @param shots the positions where the shots are fired
 	 */
-	void fireShots(List<IPosition> shots);
+	Move fireShots(List<IPosition> shots);
 
 	record ShotResult(boolean valid, boolean repeated, IShip ship, boolean sunk) {}
 

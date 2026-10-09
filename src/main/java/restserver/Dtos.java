@@ -104,6 +104,7 @@ public class Dtos {
 		public int    shipsRemaining;
 		public String gameStatus;
 		public String winner;          // null when ONGOING; "AI_WINS" or "STUDENT_WINS" when GAME_OVER
+		public long moveTimeMillis;
 	}
 
 	/** Result for one individual shot. */
