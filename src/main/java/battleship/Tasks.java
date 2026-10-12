@@ -135,10 +135,64 @@ public class Tasks {
 						}
 					}
 					break;
-				case TIROS:
-					if (game != null)
-						game.printMyBoard(true, true);
-					break;
+
+	case TIROS:
+    if (game == null) {
+        System.out.println(
+            "Crie ou carregue uma frota primeiro."
+        );
+        break;
+    }
+
+    // Mostrar o tabuleiro antes de escolher os tiros
+    game.printAlienBoard(true, true);
+
+    // Consumir a quebra de linha deixada por in.next()
+    in.nextLine();
+
+    System.out.println(
+        "Introduza 3 posições para atacar (ex.: A3 B5 C7):"
+    );
+
+    game.startMoveTimer();
+
+    try {
+        String input = in.nextLine().trim();
+        Scanner shotsInput = new Scanner(input);
+        List<IPosition> shots = new java.util.ArrayList<>();
+
+        while (shotsInput.hasNext()) {
+            shots.add(readClassicPosition(shotsInput));
+        }
+        shotsInput.close();
+
+        if (shots.size() != Game.NUMBER_SHOTS) {
+            System.out.println(
+                "Tem de introduzir exatamente 3 posições."
+            );
+            game.stopMoveTimer();
+            break;
+        }
+
+        game.fireShotsAtAlienFleet(shots);
+
+        long elapsed = game.stopMoveTimer();
+
+        System.out.println(
+            "Tempo da jogada: " +
+            MoveTimer.formatTime(elapsed)
+        );
+
+        game.printAlienBoard(true, true);
+
+    } catch (IllegalArgumentException e) {
+        game.stopMoveTimer();
+        System.out.println(
+            "Posições inválidas: " + e.getMessage()
+        );
+    }
+    break;
+
 
 				case HISTORICO:
 					printHistory(database, in.next());
