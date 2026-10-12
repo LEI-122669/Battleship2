@@ -75,19 +75,37 @@ public class Tasks {
 						game.printMyBoard(false, true);
 					break;
 				case RAJADA:
-					if (game != null) {
-						game.readEnemyFire(in);
-						myFleet.printStatus();
-						game.printMyBoard(true, false);
+    if (game != null) {
+        game.startMoveTimer();
 
-						if (game.getRemainingShips() == 0) {
-							database.finishGame(game.getGameId(), WINNER_ENEMY, game);
-							PDFExporter.exportGameReport("relatorio_jogo.pdf", ((Game) game).generateReport());
-							game.over();
-							System.exit(0);
-						}
-					}
-					break;
+        try {
+            game.readEnemyFire(in);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid shots: " + e.getMessage());
+            break;
+        }
+
+        long elapsed = game.stopMoveTimer();
+
+        System.out.println(
+            "Time taken for this move: " +
+            MoveTimer.formatTime(elapsed)
+        );
+
+        myFleet.printStatus();
+        game.printMyBoard(true, false);
+
+        if (game.getRemainingShips() == 0) {
+            database.finishGame(game.getGameId(), WINNER_ENEMY, game);
+            PDFExporter.exportGameReport(
+                "relatorio_jogo.pdf",
+                game.generateReport()
+            );
+            game.over();
+            System.exit(0);
+        }
+    }
+    break;
 				case PDF:
 					if (game != null) {
 						String reportContent = game.generateReport();
