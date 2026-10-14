@@ -209,6 +209,8 @@ public class Game implements IGame
 	private GameDatabase database;
 	private String gameId;
 
+	private final MoveTimer moveTimer = new MoveTimer();
+
 	//------------------------------------------------------------------
 	public Game(IFleet myFleet)
 	{
@@ -640,5 +642,13 @@ public class Game implements IGame
 		}
 		return sb.toString();
 	}
+
+	public void startMoveTimer() {
+    moveTimer.start();
+}
+
+public long stopMoveTimer() {
+    return moveTimer.stop();
+}
 
 }
