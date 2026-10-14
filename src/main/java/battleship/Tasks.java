@@ -81,14 +81,14 @@ public class Tasks {
         try {
             game.readEnemyFire(in);
         } catch (IllegalArgumentException e) {
-            System.out.println("Invalid shots: " + e.getMessage());
+            System.out.println("Tiros inválidos: " + e.getMessage());
             break;
         }
 
         long elapsed = game.stopMoveTimer();
 
         System.out.println(
-            "Time taken for this move: " +
+            "Tempo demorado na jogada: " +
             MoveTimer.formatTime(elapsed)
         );
 
