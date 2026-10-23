@@ -1,6 +1,6 @@
 # 124359 - Roman Havrylenko
 version: "1.0"
-linter: jetbrains/qodana-jvm-community:latest
+linter: jetbrains/qodana-jvm-community:2024.2
 projectJDK: "21"
 profile:
   path: .qodana/profiles/profile-124359.yaml
