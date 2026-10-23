@@ -2,9 +2,9 @@
 name: Qodana smell gate 124359
 
 on:
+  pull_request:
   push:
     branches: [main]
-  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -18,10 +18,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
       - uses: JetBrains/qodana-action@v2024.2.5
         with:
-          args: --linter,jetbrains/qodana-jvm-community:2024.2,--config,qodana-124359.yaml
+          args: --config qodana-124359.yaml
           use-annotations: true
           post-pr-comment: true

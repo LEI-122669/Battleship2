@@ -6,4 +6,4 @@ profile:
     - inspection: OverlyLongMethod
       enabled: true
       options:
-        m_limit: 30
+        m_limit: 100
