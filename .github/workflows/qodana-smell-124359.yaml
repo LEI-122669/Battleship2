@@ -1,5 +1,6 @@
 # 124359 Roman Havrylenko
 name: Qodana smell gate 124359
+
 on:
   pull_request:
   push:
@@ -15,13 +16,17 @@ jobs:
   qodana:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
           fetch-depth: 0
 
-      - uses: JetBrains/qodana-action@v2026.2
+      - name: Qodana Scan
+        uses: JetBrains/qodana-action@v2026.2
         with:
-          args: --config qodana-124359.yaml
+          args: >-
+            --config qodana-124359.yaml
+            --profile .qodana/profiles/profile-124359.yaml
           use-annotations: true
           post-pr-comment: true
