@@ -1,10 +1,9 @@
-# 124359 - Roman Havrylenko
-name: Qodana smell gate 12345
-
+# 124359 Roman Havrylenko
+name: Qodana smell gate 124359
 on:
+  pull_request:
   push:
     branches: [main]
-  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -23,6 +22,6 @@ jobs:
 
       - uses: JetBrains/qodana-action@v2026.2
         with:
-          args: --config qodana-12345.yaml
+          args: --config qodana-124359.yaml
           use-annotations: true
           post-pr-comment: true
