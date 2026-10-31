@@ -27,6 +27,6 @@ jobs:
         with:
           args: >-
             --config qodana-124359.yaml
-            --profile .qodana/profiles/profile-124359.yaml
+            --profile-path .qodana/profiles/profile-124359.yaml
           use-annotations: true
           post-pr-comment: true
