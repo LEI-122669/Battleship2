@@ -651,4 +651,8 @@ public long stopMoveTimer() {
     return moveTimer.stop();
 }
 
+	public void testarMetodoComMuitosParametros(int p1, String p2, double p3, boolean p4, char p5) {
+		System.out.println("Este método excede o limite de parâmetros.");
+	}
+
 }
