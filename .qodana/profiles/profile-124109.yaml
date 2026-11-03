@@ -1,0 +1,16 @@
+name: "124109 - Dead Code"
+baseProfile: empty
+
+inspections:
+  - inspection: CommentedOutCode
+    enabled: true
+    severity: WARNING
+  - inspection: unused
+    enabled: true
+    severity: WARNING
+  - inspection: UnusedAssignment
+    enabled: true
+    severity: WARNING
+  - inspection: UNUSED_IMPORT
+    enabled: true
+    severity: WARNING
