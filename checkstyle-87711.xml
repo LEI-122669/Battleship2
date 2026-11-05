@@ -1,0 +1,12 @@
+<!-- 87711 - José Gil -->
+
+<module name="Checker">
+    <property name="severity" value="error"/>
+
+    <module name="TreeWalker">
+        <module name="PackageName">
+            <property name="format"
+                      value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+        </module>
+    </module>
+</module>
