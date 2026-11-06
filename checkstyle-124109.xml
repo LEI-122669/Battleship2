@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module [
+    <!ELEMENT module (module|property|metadata|message)*>
+    <!ATTLIST module name NMTOKEN #REQUIRED>
+    <!ELEMENT property EMPTY>
+    <!ATTLIST property name NMTOKEN #REQUIRED value CDATA #REQUIRED default CDATA #IMPLIED>
+    <!ELEMENT metadata EMPTY>
+    <!ATTLIST metadata name NMTOKEN #REQUIRED value CDATA #REQUIRED>
+    <!ELEMENT message EMPTY>
+    <!ATTLIST message key NMTOKEN #REQUIRED value CDATA #REQUIRED>
+]>
+<!-- 124109 Salvador Gomes -->
+<module name="Checker">
+    <property name="severity" value="error"/>
+    <module name="TreeWalker">
+        <module name="ConstantName">
+            <property name="format" value="^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$"/>
+        </module>
+    </module>
+</module>
