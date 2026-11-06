@@ -1,6 +1,6 @@
 # Checkstyle — PackageName
 
-**Aluno:** José Gil
+**Aluno:** José Gil 
 **Número:** 87711  
 **Projeto:** BattleShip2
 
@@ -31,13 +31,13 @@ Esta expressão exige que cada componente do package comece por uma letra minús
 
 Foi introduzido o package `BattleShip`, que não respeita a convenção definida. O Checkstyle identificou a violação e o quality gate falhou.
 
-**URL da execução que falhou:** [Colocar URL da execução]
+**URL da execução que falhou:**
 
 ### Teste 2 — Sucesso
 
 O package foi corrigido para `battleship`, passando a respeitar a convenção definida. Após a correção, o workflow foi executado novamente e o quality gate passou.
 
-**URL da execução que passou:** [Colocar URL da execução]
+**URL da execução que passou:**
 
 ## 3. Limitações do Checkstyle
 
