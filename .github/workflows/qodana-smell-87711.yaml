@@ -1,6 +1,6 @@
 # 87711 - José Gil
 
-name: Qodana - Large Class quality gate
+name: Qodana smell gate 87711
 
 on:
   pull_request:
@@ -31,7 +31,8 @@ jobs:
       - name: Qodana Scan
         uses: JetBrains/qodana-action@v2026.2
         with:
-          pr-mode: ${{ github.event_name == 'pull_request' }}
+          args: >-
+            --config qodana-87711.yaml
+            --profile-path .qodana/profiles/profile-87711.yaml
           use-annotations: true
-          upload-result: true
-          artifact-name: qodana-large-class-report
+          post-pr-comment: true
