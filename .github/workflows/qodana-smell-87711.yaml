@@ -17,6 +17,11 @@ jobs:
   qodana:
     runs-on: ubuntu-latest
     steps:
+      - name: Check Java files
+        run: |
+              find src -type f -name "*.java"
+              find . -name "pom.xml"
+    
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
