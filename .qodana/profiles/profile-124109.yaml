@@ -1,0 +1,17 @@
+# 124109 Salvador
+profile:
+  base:
+    name: empty
+  inspections:
+    - inspection: CommentedOutCode
+      enabled: true
+      severity: WARNING
+    - inspection: unused
+      enabled: true
+      severity: WARNING
+    - inspection: UnusedAssignment
+      enabled: true
+      severity: WARNING
+    - inspection: UNUSED_IMPORT
+      enabled: true
+      severity: WARNING
