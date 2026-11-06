@@ -23,7 +23,7 @@ class PDFExporterTest {
     }
 
     @Test
-    @DisplayName("Test PDF export success with valid file path and content")
+    @DisplayName("Test PDF export success")
     void testExportGameReportSuccess() {
         PDFExporter.exportGameReport(VALID_FILE_PATH, "Game stats");
         File pdfFile = new File(VALID_FILE_PATH);
@@ -32,7 +32,7 @@ class PDFExporterTest {
     }
 
     @Test
-    @DisplayName("Test PDF export exception handling with invalid file path")
+    @DisplayName("Test PDF export exception handling")
     void testExportGameReportException() {
         assertDoesNotThrow(() -> PDFExporter.exportGameReport(INVALID_FILE_PATH, "Test content"));
     }

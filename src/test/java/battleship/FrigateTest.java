@@ -61,10 +61,10 @@ class FrigateTest {
     @Test
     @DisplayName("Test Frigate constructor with EAST bearing")
     void testConstructorEast() {
-        frigate = new Frigate(Compass.EAST, new Position(5, 5));
-        List<IPosition> positions = frigate.getPositions();
+        IShip frigateEast = new Frigate(Compass.EAST, new Position(5, 5));
+        List<IPosition> positions = frigateEast.getPositions();
 
-        assertNotNull(frigate);
+        assertNotNull(frigateEast);
         assertEquals(4, positions.size());
         assertEquals(new Position(5, 5), positions.get(0));
         assertEquals(new Position(5, 6), positions.get(1));
@@ -75,10 +75,10 @@ class FrigateTest {
     @Test
     @DisplayName("Test Frigate constructor with WEST bearing")
     void testConstructorWest() {
-        frigate = new Frigate(Compass.WEST, new Position(5, 5));
-        List<IPosition> positions = frigate.getPositions();
+        IShip frigateWest = new Frigate(Compass.WEST, new Position(5, 5));
+        List<IPosition> positions = frigateWest.getPositions();
 
-        assertNotNull(frigate);
+        assertNotNull(frigateWest);
         assertEquals(4, positions.size());
         assertEquals(new Position(5, 5), positions.get(0));
         assertEquals(new Position(5, 6), positions.get(1));

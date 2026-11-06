@@ -18,18 +18,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class ShipTest {
 
     private IShip ship;
-    private IShip shipBorder;
 
     @BeforeEach
     void setUp() {
         ship = new Barge(Compass.NORTH, new Position(5, 5));
-        shipBorder = new Barge(Compass.NORTH, new Position(0, 0));
     }
 
     @AfterEach
     void tearDown() {
         ship = null;
-        shipBorder = null;
     }
 
     @Test
@@ -245,11 +242,11 @@ class ShipTest {
         List<IPosition> adjCenter = ship.getAdjacentPositions();
         assertEquals(8, adjCenter.size());
 
-        List<IPosition> adjBorder = shipBorder.getAdjacentPositions();
-        assertFalse(adjBorder.isEmpty());
+        IShip shipBorder = new Barge(Compass.NORTH, new Position(0, 0));
+        assertFalse(shipBorder.getAdjacentPositions().isEmpty());
 
         IShip shipBottomRight = new Barge(Compass.NORTH, new Position(Game.BOARD_SIZE - 1, Game.BOARD_SIZE - 1));
-        assertNotNull(shipBottomRight.getAdjacentPositions());
+        assertFalse(shipBottomRight.getAdjacentPositions().isEmpty());
     }
 
     @Test
