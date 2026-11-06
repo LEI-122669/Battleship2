@@ -40,7 +40,7 @@ public class Tasks {
 	private static final String PDF = "pdf";
 
 	/**
-	 * This task also tests the fighting element of a round of three shots
+	 * Main menu loop - Refactored to satisfy Qodana OverlyLongMethod inspection.
 	 */
 	public static void menu() {
 		Game game = null;
@@ -62,7 +62,7 @@ public class Tasks {
 					break;
 				case LEFROTA:
 					myFleet = buildFleet(in);
-					game = newGame(myFleet,database);
+					game = newGame(myFleet, database);
 					game.printMyBoard(false, true);
 					refreshBoardView(game);
 					break;
@@ -75,138 +75,29 @@ public class Tasks {
 						game.printMyBoard(false, true);
 					break;
 				case RAJADA:
-    if (game != null) {
-        game.startMoveTimer();
-
-        try {
-            game.readEnemyFire(in);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Tiros inválidos: " + e.getMessage());
-            break;
-        }
-
-        long elapsed = game.stopMoveTimer();
-
-        System.out.println(
-            "Tempo demorado na jogada: " +
-            MoveTimer.formatTime(elapsed)
-        );
-
-        myFleet.printStatus();
-        game.printMyBoard(true, false);
-
-        if (game.getRemainingShips() == 0) {
-            database.finishGame(game.getGameId(), WINNER_ENEMY, game);
-            PDFExporter.exportGameReport(
-                "relatorio_jogo.pdf",
-                game.generateReport()
-            );
-            game.over();
-            System.exit(0);
-        }
-    }
-    break;
+					handleRajadaCommand(game, myFleet, database, in);
+					break;
 				case PDF:
-					if (game != null) {
-						String reportContent = game.generateReport();
-						PDFExporter.exportGameReport("relatorio_jogo.pdf", reportContent);
-					} else {
-						System.out.println("Nenhum jogo em andamento! Crie ou leia uma frota primeiro.");
-					}
+					handlePdfCommand(game);
 					break;
 				case SIMULA:
-					if (game != null) {
-						while (game.getRemainingShips() > 0){
-							game.randomEnemyFire();
-							myFleet.printStatus();
-							game.printMyBoard(true, false);
-							try {
-								Thread.sleep(3000);
-							} catch (InterruptedException e) {
-								Thread.currentThread().interrupt(); // Best practice: restore interrupt status
-							}
-						}
-
-						if (game.getRemainingShips() == 0) {
-							database.finishGame(game.getGameId(), WINNER_ENEMY, game);
-							PDFExporter.exportGameReport("relatorio_jogo.pdf", ((Game) game).generateReport());
-							game.over();
-							System.exit(0);
-						}
-					}
+					handleSimulaCommand(game, myFleet, database);
 					break;
-
-	case TIROS:
-    if (game == null) {
-        System.out.println(
-            "Crie ou carregue uma frota primeiro."
-        );
-        break;
-    }
-
-    // Mostrar o tabuleiro antes de escolher os tiros
-    game.printAlienBoard(true, true);
-
-    // Consumir a quebra de linha deixada por in.next()
-    in.nextLine();
-
-    System.out.println(
-        "Introduza 3 posições para atacar (ex.: A3 B5 C7):"
-    );
-
-    game.startMoveTimer();
-
-    try {
-        String input = in.nextLine().trim();
-        Scanner shotsInput = new Scanner(input);
-        List<IPosition> shots = new java.util.ArrayList<>();
-
-        while (shotsInput.hasNext()) {
-            shots.add(readClassicPosition(shotsInput));
-        }
-        shotsInput.close();
-
-        if (shots.size() != Game.NUMBER_SHOTS) {
-            System.out.println(
-                "Tem de introduzir exatamente 3 posições."
-            );
-            game.stopMoveTimer();
-            break;
-        }
-
-        game.fireShotsAtAlienFleet(shots);
-
-        long elapsed = game.stopMoveTimer();
-
-        System.out.println(
-            "Tempo da jogada: " +
-            MoveTimer.formatTime(elapsed)
-        );
-
-        game.printAlienBoard(true, true);
-
-    } catch (IllegalArgumentException e) {
-        game.stopMoveTimer();
-        System.out.println(
-            "Posições inválidas: " + e.getMessage()
-        );
-    }
-    break;
-
-
+				case TIROS:
+					handleTirosCommand(game, in);
+					break;
 				case HISTORICO:
 					printHistory(database, in.next());
 					break;
-
 				case JANELA:
 					if (myFleet == null)
 						System.out.println("Gere ou carregue uma frota primeiro ('" + GERAFROTA + "' ou '" + LEFROTA + "').");
 					else
 						BoardView.show(myFleet, game.getAlienMoves(), game.getAlienFleet(), game.getMyMoves());
 					break;
-                case AJUDA:
-                    menuHelp();
-                    break;
+				case AJUDA:
+					menuHelp();
+					break;
 				default:
 					System.out.println("Que comando é esse??? Repete ...");
 			}
@@ -216,23 +107,106 @@ public class Tasks {
 		System.out.println(GOODBYE_MESSAGE);
 	}
 
-	/**
-	 * Atualiza a vista gráfica com o estado atual do jogo.
-	 *
-	 * <p>Se a janela ainda não tiver sido pedida, esta operação não faz nada — o custo de a
-	 * chamar a cada jogada é desprezável.</p>
-	 *
-	 * @param game o jogo em curso, ou {@code null} se ainda não existir
-	 */
+	private static void handleRajadaCommand(Game game, IFleet myFleet, GameDatabase database, Scanner in) {
+		if (game == null) return;
+
+		game.startMoveTimer();
+		try {
+			game.readEnemyFire(in);
+		} catch (IllegalArgumentException e) {
+			System.out.println("Tiros inválidos: " + e.getMessage());
+			return;
+		}
+
+		long elapsed = game.stopMoveTimer();
+		System.out.println("Tempo demorado na jogada: " + MoveTimer.formatTime(elapsed));
+
+		myFleet.printStatus();
+		game.printMyBoard(true, false);
+
+		if (game.getRemainingShips() == 0) {
+			database.finishGame(game.getGameId(), WINNER_ENEMY, game);
+			PDFExporter.exportGameReport("relatorio_jogo.pdf", game.generateReport());
+			game.over();
+			System.exit(0);
+		}
+	}
+
+	private static void handlePdfCommand(Game game) {
+		if (game != null) {
+			String reportContent = game.generateReport();
+			PDFExporter.exportGameReport("relatorio_jogo.pdf", reportContent);
+		} else {
+			System.out.println("Nenhum jogo em andamento! Crie ou leia uma frota primeiro.");
+		}
+	}
+
+	private static void handleSimulaCommand(Game game, IFleet myFleet, GameDatabase database) {
+		if (game == null) return;
+
+		while (game.getRemainingShips() > 0) {
+			game.randomEnemyFire();
+			myFleet.printStatus();
+			game.printMyBoard(true, false);
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
+
+		if (game.getRemainingShips() == 0) {
+			database.finishGame(game.getGameId(), WINNER_ENEMY, game);
+			PDFExporter.exportGameReport("relatorio_jogo.pdf", game.generateReport());
+			game.over();
+			System.exit(0);
+		}
+	}
+
+	private static void handleTirosCommand(Game game, Scanner in) {
+		if (game == null) {
+			System.out.println("Crie ou carregue uma frota primeiro.");
+			return;
+		}
+
+		game.printAlienBoard(true, true);
+		in.nextLine();
+		System.out.println("Introduza 3 posições para atacar (ex.: A3 B5 C7):");
+
+		game.startMoveTimer();
+		try {
+			String input = in.nextLine().trim();
+			Scanner shotsInput = new Scanner(input);
+			List<IPosition> shots = new java.util.ArrayList<>();
+
+			while (shotsInput.hasNext()) {
+				shots.add(readClassicPosition(shotsInput));
+			}
+			shotsInput.close();
+
+			if (shots.size() != Game.NUMBER_SHOTS) {
+				System.out.println("Tem de introduzir exatamente 3 posições.");
+				game.stopMoveTimer();
+				return;
+			}
+
+			game.fireShotsAtAlienFleet(shots);
+			long elapsed = game.stopMoveTimer();
+			System.out.println("Tempo da jogada: " + MoveTimer.formatTime(elapsed));
+			game.printAlienBoard(true, true);
+
+		} catch (IllegalArgumentException e) {
+			game.stopMoveTimer();
+			System.out.println("Posições inválidas: " + e.getMessage());
+		}
+	}
+
 	private static void refreshBoardView(IGame game) {
 		if (game == null)
 			return;
 		BoardView.update(game.getMyFleet(), game.getAlienMoves(), game.getAlienFleet(), game.getMyMoves());
 	}
 
-	/**
-	 * This function provides help information about the menu commands.
-	 */
 	public static void menuHelp() {
 		System.out.println("======================= AJUDA DO MENU =========================");
 		System.out.println("Digite um dos comandos abaixo para interagir com o jogo:");
@@ -270,18 +244,12 @@ public class Tasks {
 		for (String line : moves)
 			System.out.println(line);
 	}
-	/**
-	 * This operation allows the build up of a fleet, given user data
-	 *
-	 * @param in The scanner to read from
-	 * @return The fleet that has been built
-	 */
-	public static Fleet buildFleet(Scanner in) {
 
+	public static Fleet buildFleet(Scanner in) {
 		assert in != null;
 
 		Fleet fleet = new Fleet();
-		int i = 0; // i represents the total of successfully created ships
+		int i = 0;
 		while (i < Fleet.FLEET_SIZE) {
 			IShip s = readShip(in);
 			if (s != null) {
@@ -298,14 +266,7 @@ public class Tasks {
 		return fleet;
 	}
 
-	/**
-	 * This operation reads data about a ship, build it and returns it
-	 *
-	 * @param in The scanner to read from
-	 * @return The created ship based on the data that has been read
-	 */
 	public static Ship readShip(Scanner in) {
-
 		assert in != null;
 
 		String shipKind = in.next();
@@ -315,14 +276,7 @@ public class Tasks {
 		return Ship.buildShip(shipKind, bearing, pos);
 	}
 
-	/**
-	 * This operation allows reading a position in the map
-	 *
-	 * @param in The scanner to read from
-	 * @return The position that has been read
-	 */
 	public static Position readPosition(Scanner in) {
-
 		assert in != null;
 
 		int row = in.nextInt();
@@ -330,42 +284,31 @@ public class Tasks {
 		return new Position(row, column);
 	}
 
-	/**
-	 * This operation allows reading a position in the map
-	 *
-	 * @param in The scanner to read from
-	 * @return The classic position that has been read
-	 */
 	public static IPosition readClassicPosition(@NotNull Scanner in) {
-		// Verifica se ainda há tokens disponíveis
 		if (!in.hasNext()) {
 			throw new IllegalArgumentException("Nenhuma posição válida encontrada!");
 		}
 
-		String part1 = in.next(); // Primeiro token
+		String part1 = in.next();
 		String part2 = null;
 
 		if (in.hasNextInt()) {
-			part2 = in.next(); // Segundo token, se disponível
+			part2 = in.next();
 		}
 
 		String input = (part2 != null) ? part1 + part2 : part1;
-
-		// Normalizar o input para tratar letras maiúsculas e minúsculas
 		input = input.toUpperCase();
 
-		// Verificar os dois formatos possíveis: compactos e com espaço
 		if (input.matches("[A-Z]\\d+")) {
-			char column = input.charAt(0); // Extrair a coluna
-			int row = Integer.parseInt(input.substring(1)); // Extrair a linha
+			char column = input.charAt(0);
+			int row = Integer.parseInt(input.substring(1));
 			return new Position(column, row);
 		} else if (part2 != null && part1.matches("[A-Z]") && part2.matches("\\d+")) {
-			char column = part1.charAt(0); // Extrair a coluna
-			int row = Integer.parseInt(part2); // Extrair a linha
+			char column = part1.charAt(0);
+			int row = Integer.parseInt(part2);
 			return new Position(column, row);
 		} else {
 			throw new IllegalArgumentException("Formato inválido. Use 'A3', 'A 3' ou similar.");
 		}
 	}
-
 }

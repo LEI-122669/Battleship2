@@ -103,3 +103,6 @@ A documentacao Javadoc e gerada para a pasta `docs/` e publicada pelo **GitHub P
 
 ## Video Youtube
 https://youtu.be/s7nYOsfOEDk
+
+## Workflow de CI/CD
+O projeto está configurado para executar testes unitários automaticamente através do GitHub Actions (Workflow: Java with Maven). Os testes são executados automaticamente a cada Push e Pull Request no ramo `main`..
