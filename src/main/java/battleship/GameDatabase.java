@@ -20,6 +20,7 @@ import org.apache.logging.log4j.Logger;
  */
 // 124109: configuração Checkstyle (ficha 3)
 public class GameDatabase {
+           private static final int maxShips = 5;
 
     private static final Logger LOGGER = LogManager.getLogger();
 
