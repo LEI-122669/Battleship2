@@ -8,7 +8,7 @@ profile:
 
   inspections:
     # Limite configurado para o trabalho: 10 métodos
-    - inspection: ClassWithTooManyMethods
+    - inspection: MethodCount
       enabled: true
       options:
         m_limit: 10
