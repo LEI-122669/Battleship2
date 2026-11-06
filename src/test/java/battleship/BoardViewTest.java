@@ -204,7 +204,7 @@ class BoardViewTest {
 	@Test
 	@DisplayName("show imprime aviso e nao lanca excecao numa JVM headless")
 	void showIsSafeInHeadlessJvm() throws Exception {
-		String java = Path.of(System.getProperty("java.home"), "bin", "java.exe").toString();
+		String java = Path.of(System.getProperty("java.home"), "bin", "java").toString();
 		Path output = Path.of("target", "headless-probe.out");
 
 		Process processo = new ProcessBuilder(java,
