@@ -3,7 +3,7 @@ linter: jetbrains/qodana-jvm-community:2026.2
 projectJDK: "23"
 
 profile:
-  path: .qodana/profiles/profile-124359.yaml
+  path: .qodana/profiles/profile-87711.yaml
 
 failureConditions:
   severityThresholds:
