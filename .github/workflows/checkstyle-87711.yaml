@@ -1,7 +1,7 @@
 
 # 87711 - José Gil
 
-name: Checkstyle - PackageName Quality Gate
+name: Checkstyle 87711
 
 on:
   pull_request:
