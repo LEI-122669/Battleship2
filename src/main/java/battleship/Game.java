@@ -647,10 +647,6 @@ public class Game implements IGame
     moveTimer.start();
 }
 
-	public void configureGameSettings(int boardSize, int maxShips, int timeLimit, boolean isHardMode, String playerOneName, String playerTwoName) {
-		System.out.println("Configuring game for: " + playerOneName + " and " + playerTwoName);
-	}
-
 
 
 public long stopMoveTimer() {
