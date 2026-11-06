@@ -1,32 +1,33 @@
 # Qodana — Large Class
 
-**Aluno:** [Nome completo]  
+**Aluno:** José Gil  
 **Número:** 87711  
 **Projeto:** BattleShip2  
 **Code smell:** Large Class
 
 ## 1. Mapeamento do code smell
 
-| Code smell | Inspeção Qodana | Métrica utilizada | Limite |
+| Code smell | Inspeção Qodana | Métrica / critério | Limite configurado |
 |---|---|---|---|
-| Large Class | `OverlyComplexClass` | Soma das complexidades ciclomáticas dos métodos e inicializadores da classe | 46 |
+| Large Class | `ClassWithTooManyMethods` | Número de métodos da classe | 10 métodos |
+| Large Class | `OverlyComplexClass` | Complexidade total da classe | 80 |
 
-A inspeção `OverlyComplexClass` identifica classes cuja complexidade total ultrapassa o limite configurado. O limite 46 deve corresponder ao valor definido no perfil de inspeção utilizado.
+O perfil `profile-87711.yaml` utiliza uma configuração inicial vazia e ativa explicitamente estas duas inspeções. A primeira identifica classes com mais de 10 métodos e a segunda identifica classes cuja complexidade ultrapassa o limite de 80.
 
 ## 2. Testes do quality gate
 
 ### Teste 1 — Falha
 
-Foi criada uma branch de teste e introduzida uma classe cuja complexidade ultrapassa o limite configurado.
+Foi criada uma branch de teste e introduzida uma classe que ultrapassa um dos limites definidos no perfil de inspeção do Qodana.
 
 **URL da execução que falhou:** [Colocar aqui o URL do GitHub Actions]
 
 ### Teste 2 — Sucesso
 
-A classe foi corrigida, reduzindo a sua complexidade para um valor abaixo do limite configurado.
+A classe foi corrigida, deixando de ultrapassar os limites configurados. Após o novo commit, o Qodana voltou a executar e o quality gate passou.
 
 **URL da execução que passou:** [Colocar aqui o URL do GitHub Actions]
 
 ## 3. Reflexão crítica
 
-O Qodana detetou a classe cuja complexidade ciclomática total ultrapassava o limite definido. A deteção pode produzir falsos positivos, por exemplo, quando uma classe tem uma complexidade elevada, mas essa complexidade é justificada pela sua responsabilidade, e falsos negativos quando uma classe tem demasiadas responsabilidades, mas não ultrapassa o limite. O resultado é sensível ao valor-limite configurado, pois a alteração desse valor pode fazer com que uma classe deixe de ser sinalizada ou passe a ser sinalizada. Esta inspeção é apenas uma aproximação ao cheiro Large Class e não avalia todas as estratégias de deteção e métricas propostas no livro.
+O Qodana detetou classes que ultrapassam os limites definidos para o número de métodos e para a complexidade total. Podem existir falsos positivos, quando uma classe ultrapassa um limite mas tem responsabilidades justificadas, e falsos negativos, quando uma classe tem demasiadas responsabilidades sem ultrapassar os limites configurados. Os resultados são sensíveis aos valores escolhidos, uma vez que alterar os limites de 10 métodos ou 80 de complexidade pode alterar as classes sinalizadas. Estas inspeções são aproximações ao cheiro Large Class e não avaliam todas as estratégias e métricas propostas no livro, nem substituem uma análise da responsabilidade e coesão das classes.
