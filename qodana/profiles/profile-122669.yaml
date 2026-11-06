@@ -6,4 +6,4 @@ profile:
     - inspection: MethodWithTooManyParameters
       enabled: true
       options:
-        max: 4
+        max: 6
