@@ -16,18 +16,13 @@ permissions:
 jobs:
   qodana:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
-      pull-requests: write
-      checks: write
-
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
           fetch-depth: 0
-
+          
       - name: Qodana Scan
         uses: JetBrains/qodana-action@v2026.2
         with:
