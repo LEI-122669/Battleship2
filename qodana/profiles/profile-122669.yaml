@@ -1,7 +1,7 @@
 # 122669 Luo Hang
 profile:
   base:
-    name: .qodana/profiles/profile-122669.yaml
+    name: empty
   inspections:
     - inspection: MethodWithTooManyParameters
       enabled: true
