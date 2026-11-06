@@ -1,5 +1,6 @@
 package battleship;
 
+import java.util.LinkedList;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -217,4 +218,13 @@ public class GameDatabase {
             return "MISS";
         return r.sunk() ? "SUNK" : "HIT";
     }
+
+    private int metodoNuncaUsado(int x) {
+        int y = 10;
+        y = x * 2;
+        return y;
+    }
+
+    // int total = 0;
+    // total = total + 1;
 }
