@@ -1,4 +1,3 @@
-# 122669 Luo Hang
 profile:
   base:
     name: empty
@@ -6,4 +5,4 @@ profile:
     - inspection: MethodWithTooManyParameters
       enabled: true
       options:
-        limit: 4
+        max: 6
