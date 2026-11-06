@@ -15,6 +15,7 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.Serial;
 import java.util.List;
 
 /**
@@ -340,7 +341,8 @@ public final class BoardView {
 	 */
 	private static final class BoardCanvas extends JPanel {
 
-		private static final long serialVersionUID = 1L;
+		@Serial
+        private static final long serialVersionUID = 1L;
 
 		BoardCanvas() {
 			setOpaque(true);
