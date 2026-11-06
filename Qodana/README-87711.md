@@ -20,13 +20,13 @@ O perfil `profile-87711.yaml` utiliza uma configuração inicial vazia e ativa e
 
 Foi criada uma branch de teste e introduzida uma classe que ultrapassa um dos limites definidos no perfil de inspeção do Qodana.
 
-**URL da execução que falhou:** [Colocar aqui o URL do GitHub Actions]
+**URL da execução que falhou:** 
 
 ### Teste 2 — Sucesso
 
 A classe foi corrigida, deixando de ultrapassar os limites configurados. Após o novo commit, o Qodana voltou a executar e o quality gate passou.
 
-**URL da execução que passou:** [Colocar aqui o URL do GitHub Actions]
+**URL da execução que passou:** 
 
 ## 3. Reflexão crítica
 
