@@ -18,7 +18,7 @@ class PDFExporterTest {
     void tearDown() {
         File file = new File(VALID_FILE_PATH);
         if (file.exists()) {
-            file.delete();
+            assertTrue(file.delete());
         }
     }
 
