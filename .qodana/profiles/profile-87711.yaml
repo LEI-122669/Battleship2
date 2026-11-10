@@ -14,7 +14,7 @@ profile:
         m_limit: 10
 
     # Limite configurado para o trabalho: complexidade 80
-    - inspection: ClassComplexity
+    - inspection: OverlyComplexClass
       enabled: true
       options:
         m_limit: 80
