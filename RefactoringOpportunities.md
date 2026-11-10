@@ -1,6 +1,6 @@
 # Oportunidades de Refabricação
 
-| Local | Nome do cheiro no código | Nome da refabricação | Número d@ alun@ |
+| Local | Nome do cheiro no código | Nome da refabricação | Número do aluno |
 | :--- | :--- | :--- | :--- |
 | Game::randomEnemyFire | Long Method | Extract Method | 124359 |
 | Game::fireShots | Speculative Generality | Safe Delete | 124359 |
