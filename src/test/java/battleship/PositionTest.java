@@ -166,7 +166,8 @@ public class PositionTest {
 	@Test
 	void equals5() {
 		Object sameReference = position;
-		assertEquals(sameReference, position, "A position should be equal to itself");
+		assertTrue(position.equals(sameReference),
+				"A position should be equal to itself");
 	}
 
 	@Test
