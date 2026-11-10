@@ -390,7 +390,9 @@ public class Game implements IGame
 	 */
 	public void fireShots(List<IPosition> shots)
 	{
-		assert shots != null;
+		if (shots == null) {
+			throw new IllegalArgumentException("Shots list cannot be null.");
+		}
 
 		List<ShotResult> shotResults = new ArrayList<ShotResult>();
 		if (shots.size() != NUMBER_SHOTS) {
@@ -405,7 +407,6 @@ public class Game implements IGame
 
 		Move move = new Move(moveNumber, shots, shotResults);
 
-//		System.out.println(move);
 
 		move.processEnemyFire(true);
 

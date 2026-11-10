@@ -11,6 +11,11 @@ import java.util.List;
  */
 public class Fleet implements IFleet
 {
+	private static final String SHIP_TYPE_GALEAO = "galeao";
+	private static final String SHIP_TYPE_FRAGATA = "fragata";
+	private static final String SHIP_TYPE_NAU = "nau";
+	private static final String SHIP_TYPE_CARAVELA = "caravela";
+	private static final String SHIP_TYPE_BARCA = "barca";
 	/**
 	 * Creates a randomly generated fleet containing ships of various predefined types.
 	 * Each ship is assigned a random bearing and position. If a ship cannot be added
@@ -22,13 +27,14 @@ public class Fleet implements IFleet
 
 		IFleet randomFleet = new Fleet();
 
-		// Define the types of ships to be added
-		String[] shipTypes =
-					{"galeao",                           // 1 galleon
-				 	"fragata",                           // 1 frigate
- 				 	"nau", "nau",                        // 2 carracks
-					"caravela", "caravela", "caravela",  // 3 caravels
-					"barca", "barca", "barca", "barca"}; // 4 barges
+		// Define the types of ships to be added using constants
+		String[] shipTypes = {
+				SHIP_TYPE_GALEAO,
+				SHIP_TYPE_FRAGATA,
+				SHIP_TYPE_NAU, SHIP_TYPE_NAU,
+				SHIP_TYPE_CARAVELA, SHIP_TYPE_CARAVELA, SHIP_TYPE_CARAVELA,
+				SHIP_TYPE_BARCA, SHIP_TYPE_BARCA, SHIP_TYPE_BARCA, SHIP_TYPE_BARCA
+		};
 
 		int fleetSize = 0;
 
@@ -72,31 +78,28 @@ public class Fleet implements IFleet
     {
 	return ships;
     }
-	
-	/**
-	 * Add ship boolean.
-	 *
-	 * @param s the s
-	 * @return the boolean
-	 */
-	/*
-     * (non-Javadoc)
-     * 
-     * @see battleship.IFleet#addShip(battleship.IShip)
-     */
-    @Override
-    public boolean addShip(IShip s)
-    {
-		assert s != null;
 
-		boolean result = false;
-		if ((ships.size() <= FLEET_SIZE) && (s.isInsideBoard()) && (!colisionRisk(s)))
-		{
-			ships.add(s);
-			result = true;
+	/**
+	 * Adds a ship to the fleet.
+	 *
+	 * @param ship the ship to add
+	 * @return true if the ship was added successfully
+	 */
+	@Override
+	public boolean addShip(IShip ship)
+	{
+		if (ship == null) {
+			throw new IllegalArgumentException("Ship cannot be null.");
 		}
-		return result;
-    }
+
+		if ((ships.size() <= FLEET_SIZE) && (ship.isInsideBoard()) && (!colisionRisk(ship)))
+		{
+			ships.add(ship);
+			return true;
+		}
+
+		return false;
+	}
 
 	/**
 	 * Gets ships like.
