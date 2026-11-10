@@ -24,6 +24,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PositionTest {
 	private Position position;
 
+	private static <T> T identity(T value) {
+		return value;
+	}
+
 	@BeforeEach
 	void setUp() {
 		position = new Position(2, 3);
@@ -142,7 +146,8 @@ public class PositionTest {
 	@Test
 	void equals1() {
 		Position same = new Position(2, 3);
-		assertEquals(same, position, "Equal positions not identified as equal");
+		assertTrue(position.equals(same),
+				"Equal positions not identified as equal");
 	}
 
 	@Test
@@ -165,8 +170,7 @@ public class PositionTest {
 
 	@Test
 	void equals5() {
-		Object sameReference = position;
-		assertTrue(position.equals(sameReference),
+		assertTrue(position.equals(identity(position)),
 				"A position should be equal to itself");
 	}
 
