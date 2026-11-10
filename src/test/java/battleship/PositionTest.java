@@ -23,10 +23,12 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class PositionTest {
 	private Position position;
+	private Object sameReference;
 
 	@BeforeEach
 	void setUp() {
 		position = new Position(2, 3);
+		sameReference = position;
 	//	position = new Position('C', 4);
 	}
 
@@ -142,29 +144,32 @@ public class PositionTest {
 	@Test
 	void equals1() {
 		Position same = new Position(2, 3);
-		assertTrue(position.equals(same), "Equal positions not identified as equal");
+		assertTrue(position.equals(same),
+				"Equal positions not identified as equal");
 	}
 
 	@Test
 	void equals2() {
-		assertFalse(position.equals(null), "Position should not equal null");
+		assertNotEquals(null, position, "Position should not equal null");
 	}
 
 	@Test
 	void equals3() {
 		Object other = new Object();
-		assertFalse(position.equals(other), "Position should not equal non-Position object");
+		assertNotEquals(position, other, "Position should not equal non-Position object");
 	}
 
 	@Test
 	void equals4() {
 		Position other = new Position(2, 4);
-		assertFalse(position.equals(other), "Positions with the same row but different column should not be equal");
+		assertNotEquals(position, other,
+				"Positions with the same row but different column should not be equal");
 	}
 
 	@Test
 	void equals5() {
-		assertTrue(position.equals(position), "A position should be equal to itself");
+		assertTrue(position.equals(sameReference),
+				"A position should be equal to itself");
 	}
 
 	@Test

@@ -31,7 +31,7 @@ public class GameRegistry {
 	}
 
 	/** Remove a session (e.g. after game over). */
-	public void removeSession(String gameId) {
-		sessions.remove(gameId);
+	public boolean removeSession(String gameId) {
+		return sessions.remove(gameId) != null;
 	}
 }
