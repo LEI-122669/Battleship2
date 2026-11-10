@@ -26,7 +26,9 @@ jobs:
       - name: Qodana Scan
         uses: JetBrains/qodana-action@v2026.2
         with:
-          args: --config qodana-87711.yaml
+          args: >-
+            --config qodana-87711.yaml
+            --profile-path .qodana/profiles/profile-87711.yaml
           pr-mode: false
           use-annotations: true
           post-pr-comment: true
