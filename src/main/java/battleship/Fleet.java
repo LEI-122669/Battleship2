@@ -78,18 +78,13 @@ public class Fleet implements IFleet
     {
 	return ships;
     }
-	
+
 	/**
-	 * Add ship boolean.
+	 * Adds a ship to the fleet.
 	 *
-	 * @param s the s
-	 * @return the boolean
+	 * @param ship the ship to add
+	 * @return true if the ship was added successfully
 	 */
-	/*
-     * (non-Javadoc)
-     * 
-     * @see battleship.IFleet#addShip(battleship.IShip)
-     */
 	@Override
 	public boolean addShip(IShip ship)
 	{
