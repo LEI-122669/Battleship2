@@ -142,7 +142,7 @@ public class PositionTest {
 	@Test
 	void equals1() {
 		Position same = new Position(2, 3);
-		assertEquals(position, same, "Equal positions not identified as equal");
+		assertEquals(same, position, "Equal positions not identified as equal");
 	}
 
 	@Test
@@ -165,7 +165,8 @@ public class PositionTest {
 
 	@Test
 	void equals5() {
-		assertEquals(position, position, "A position should be equal to itself");
+		Object sameReference = position;
+		assertEquals(sameReference, position, "A position should be equal to itself");
 	}
 
 	@Test
