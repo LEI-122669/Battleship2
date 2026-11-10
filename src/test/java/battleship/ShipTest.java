@@ -26,16 +26,16 @@ class ShipTest {
     @Test
     @DisplayName("Test buildShip factory method for standard ships")
     void testBuildShipStandardTypes() {
-        assertTrue(Ship.buildShip("barca", Compass.NORTH, new Position(1, 1)) instanceof Barge);
-        assertTrue(Ship.buildShip("caravela", Compass.EAST, new Position(1, 1)) instanceof Caravel);
-        assertTrue(Ship.buildShip("nau", Compass.SOUTH, new Position(1, 1)) instanceof Carrack);
+        assertInstanceOf(Barge.class, Ship.buildShip("barca", Compass.NORTH, new Position(1, 1)));
+        assertInstanceOf(Caravel.class, Ship.buildShip("caravela", Compass.EAST, new Position(1, 1)));
+        assertInstanceOf(Carrack.class, Ship.buildShip("nau", Compass.SOUTH, new Position(1, 1)));
     }
 
     @Test
     @DisplayName("Test buildShip factory method for heavy ships")
     void testBuildShipHeavyTypes() {
-        assertTrue(Ship.buildShip("fragata", Compass.WEST, new Position(1, 1)) instanceof Frigate);
-        assertTrue(Ship.buildShip("galeao", Compass.NORTH, new Position(1, 1)) instanceof Galleon);
+        assertInstanceOf(Frigate.class, Ship.buildShip("fragata", Compass.WEST, new Position(1, 1)));
+        assertInstanceOf(Galleon.class, Ship.buildShip("galeao", Compass.NORTH, new Position(1, 1)));
     }
 
     @Test
