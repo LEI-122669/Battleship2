@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Logger;
  * <p>
  * Se a base de dados falhar, o erro é registado no log e o jogo continua.
  */
+// Ficha 3, passo 9: Dead Code removido
 public class GameDatabase {
 
     private static final Logger LOGGER = LogManager.getLogger();
