@@ -1,0 +1,32 @@
+# 87711 - José Gil
+
+name: Checkstyle gate 87711
+
+on:
+  pull_request:
+    branches:
+      - main
+      
+permissions: {}
+
+jobs:
+  checkstyle:
+    name: Checkstyle PackageName
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      checks: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Run Checkstyle
+        uses: dbelyaev/action-checkstyle@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          checkstyle_config: checkstyle-87711.xml
+          reporter: github-pr-check
+          level: error
+          fail_level: error
