@@ -1,10 +1,10 @@
+####################################################################################################################
+# WARNING: Do not store sensitive information in this file, as its contents will be included in the Qodana report. #
+####################################################################################################################
+
 version: "1.0"
-linter: jetbrains/qodana-jvm-community:2026.2
-projectJDK: "23"
-
+linter: qodana-jvm
 profile:
-  path: .qodana/profiles/profile-87711.yaml
-
-failureConditions:
-  severityThresholds:
-    any: 0
+  name: qodana.recommended
+include:
+  - name: CheckDependencyLicenses
