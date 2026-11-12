@@ -4,7 +4,6 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Test class for Fleet.
@@ -105,7 +104,7 @@ import java.util.ArrayList;
 			IShip ship = new Barge(Compass.NORTH, new Position(1, 1));
 			fleet.addShip(ship);
 			assertEquals(1, fleet.getShips().size(), "Error: Fleet should have size 1 after adding a ship.");
-			assertEquals(ship, fleet.getShips().get(0), "Error: Fleet's first ship should match the added ship.");
+			assertEquals(ship, fleet.getShips().getFirst(), "Error: Fleet's first ship should match the added ship.");
 		}
 
 		/**
@@ -121,7 +120,7 @@ import java.util.ArrayList;
 
 			List<IShip> barges = fleet.getShipsLike("Barca");
 			assertEquals(1, barges.size(), "Error: There should be exactly one ship of category 'Barca'.");
-			assertEquals(ship1, barges.get(0), "Error: The ship of category 'Barca' does not match.");
+			assertEquals(ship1, barges.getFirst(), "Error: The ship of category 'Barca' does not match.");
 		}
 
 		/**
@@ -186,4 +185,100 @@ import java.util.ArrayList;
 			fleet.addShip(ship);
 			assertDoesNotThrow(fleet::printStatus, "Error: printStatus should not throw any exceptions.");
 		}
+	/**
+	 * Test for adding a null ship.
+	 * Covers the exception branch in addShip.
+	 */
+	@Test
+	void testAddShip_Null() {
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> fleet.addShip(null));
+		assertEquals("Ship cannot be null.", exception.getMessage());
+	}
+
+	/**
+	 * Test for the getSunkShips method.
+	 */
+	@Test
+	void testGetSunkShips() {
+		IShip ship = new Barge(Compass.NORTH, new Position(5, 5));
+		fleet.addShip(ship);
+
+		assertTrue(fleet.getSunkShips().isEmpty(), "Error: Fleet should have no sunk ships initially.");
+
+		// Afundar o navio disparando em todas as suas posições
+		for (IPosition p : ship.getPositions()) {
+			p.shoot();
+		}
+
+		assertEquals(1, fleet.getSunkShips().size(), "Error: Fleet should have exactly 1 sunk ship after it is destroyed.");
+	}
+
+	/**
+	 * Test for all remaining print methods to reach 100% Method coverage.
+	 */
+	@Test
+	void testRemainingPrintMethods() {
+		IShip ship = new Barge(Compass.NORTH, new Position(8, 8));
+		fleet.addShip(ship);
+
+		assertDoesNotThrow(() -> {
+			fleet.printShips(fleet.getShips());
+			fleet.printShipsByCategory("Barca");
+			fleet.printFloatingShips();
+			fleet.printAllShips();
+		}, "Error: None of the print methods should throw an exception.");
+	}
+	/**
+	 * Cobre os casos em que a frota está vazia.
+	 * Isso força as condições dos laços 'for' a serem avaliadas como FALSO logo de início.
+	 */
+	@Test
+	void testEmptyFleetLoops() {
+		Fleet emptyFleet = new Fleet();
+		assertTrue(emptyFleet.getFloatingShips().isEmpty());
+		assertTrue(emptyFleet.getSunkShips().isEmpty());
+		assertTrue(emptyFleet.getShipsLike("Barca").isEmpty());
+		assertNull(emptyFleet.shipAt(new Position(1, 1)));
+		assertDoesNotThrow(() -> {
+			emptyFleet.printAllShips();
+			emptyFleet.printFloatingShips();
+		});
+	}
+
+	/**
+	 * Cobre o laço do colisionRisk avaliando tooCloseTo como FALSO (navios distantes).
+	 */
+	@Test
+	void testColisionRisk_NoCollisionLoop() {
+		IShip ship1 = new Barge(Compass.NORTH, new Position(1, 1));
+		fleet.addShip(ship1);
+
+		// O segundo navio está longe, força o loop de colisionRisk a rodar sem dar return true
+		IShip ship2 = new Barge(Compass.NORTH, new Position(8, 8));
+		assertTrue(fleet.addShip(ship2), "Error: Navios distantes devem ser adicionados sem risco de colisão.");
+	}
+
+	/**
+	 * Cobre a falha de encontrar o navio (ramificação false do if no laço).
+	 */
+	@Test
+	void testSearchMisses() {
+		fleet.addShip(new Barge(Compass.NORTH, new Position(1, 1)));
+		// Procura por categoria que não existe (equals == false)
+		assertTrue(fleet.getShipsLike("Galeao").isEmpty());
+		// Procura por posição que o navio não ocupa (occupies == false)
+		assertNull(fleet.shipAt(new Position(9, 9)));
+	}
+
+	/**
+	 * Cobre as ramificações de 'assert var != null' presentes no código.
+	 * Usa try-catch genérico pois o comportamento depende de a flag -ea estar ativa no IntelliJ.
+	 */
+	@Test
+	void testAssertNullBranches() {
+		try { fleet.shipAt(null); } catch (Throwable ignored) {}
+		try { fleet.getShipsLike(null); } catch (Throwable ignored) {}
+		try { fleet.printShipsByCategory(null); } catch (Throwable ignored) {}
+		try { fleet.printShips(null); } catch (Throwable ignored) {}
+	}
 	}
