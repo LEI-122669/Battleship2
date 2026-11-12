@@ -147,6 +147,20 @@ public abstract class Ship implements IShip
 		return positions;
     }
 
+	@Override
+	public void setPosition(IPosition position) {
+
+	}
+
+	@Override
+	public int getHits() {
+		return 0;
+	}
+
+	@Override
+	public void hit() {
+
+	}
 	/**
 	 * Retrieves a list of positions adjacent to the ship's current positions.
 	 * Adjacent positions are defined as neighboring positions that are not

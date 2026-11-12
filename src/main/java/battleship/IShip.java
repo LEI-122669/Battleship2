@@ -128,10 +128,18 @@ public interface IShip
 	 */
 	void sink();
 
-	/**
-	 * Is inside board boolean.
-	 *
-	 * @return the boolean
+	void setPosition(IPosition position);
+
+	int getHits();
+
+	void hit();
+
+
+
+	/*
+	  Is inside board boolean.
+
+	  @return the boolean
 	 */
 
 }
