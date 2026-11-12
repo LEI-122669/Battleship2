@@ -134,6 +134,8 @@ public interface IShip
 
 	void hit();
 
+
+
 	/*
 	  Is inside board boolean.
 

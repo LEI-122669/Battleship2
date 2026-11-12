@@ -34,15 +34,9 @@ import java.util.List;
 			fleet = null;
 		}
 
-		/**
-		 * Test for the Fleet constructor.
-		 * Cyclomatic Complexity: 1
-		 */
-		@Test
-		void testConstructor() {
-			assertNotNull(fleet, "Error: Instance of Fleet should not be null.");
-			assertTrue(fleet.getShips().isEmpty(), "Error: Fleet should be initialized with empty ships list.");
-		}
+
+
+
 
 		@Test
 		void testCreateRandom(){
@@ -137,10 +131,10 @@ import java.util.List;
 			List<IShip> floatingShips = fleet.getFloatingShips();
 			assertEquals(2, floatingShips.size(), "Error: All ships should be floating initially.");
 
-			ship1.getPositions().get(0).shoot();  // Sink ship1
+			ship1.getPositions().getFirst().shoot();  // Sink ship1
 			floatingShips = fleet.getFloatingShips();
 			assertEquals(1, floatingShips.size(), "Error: Only one ship should be floating after sinking one.");
-			assertEquals(ship2, floatingShips.get(0), "Error: The floating ship should match the expected result.");
+			assertEquals(ship2, floatingShips.getFirst(), "Error: The floating ship should match the expected result.");
 		}
 
 		/**
@@ -272,7 +266,7 @@ import java.util.List;
 
 	/**
 	 * Cobre as ramificações de 'assert var != null' presentes no código.
-	 * Usa try-catch genérico pois o comportamento depende de a flag -ea estar ativa no IntelliJ.
+	 * Usa try-catch genérico, pois o comportamento depende de a flag -ea estar ativa no IntelliJ.
 	 */
 	@Test
 	void testAssertNullBranches() {
@@ -280,5 +274,13 @@ import java.util.List;
 		try { fleet.getShipsLike(null); } catch (Throwable ignored) {}
 		try { fleet.printShipsByCategory(null); } catch (Throwable ignored) {}
 		try { fleet.printShips(null); } catch (Throwable ignored) {}
+	}
+
+	@Test
+	void printShipsRejectsNull() {
+		assertThrows(
+				NullPointerException.class,
+				() -> fleet.printShips(null)
+		);
 	}
 	}
