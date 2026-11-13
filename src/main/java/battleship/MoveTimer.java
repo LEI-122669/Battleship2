@@ -4,6 +4,7 @@ import org.apache.commons.lang3.time.StopWatch;
 
 public class MoveTimer {
 
+    private static final double MILLIS_PER_SECOND = 1000.0;
     private StopWatch stopWatch;
 
     public void start() {
@@ -22,7 +23,7 @@ public class MoveTimer {
     }
 
     public static String formatTime(long milliseconds) {
-        double seconds = milliseconds / 1000.0;
+        double seconds = milliseconds / MILLIS_PER_SECOND;
         return String.format("%.2f seconds", seconds);
     }
 }
