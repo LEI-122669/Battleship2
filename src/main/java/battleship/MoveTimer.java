@@ -23,7 +23,6 @@ public class MoveTimer {
     }
 
     public static String formatTime(long milliseconds) {
-        double seconds = milliseconds / MILLIS_PER_SECOND;
-        return String.format("%.2f seconds", seconds);
+        return String.format("%.2f seconds", milliseconds / MILLIS_PER_SECOND);
     }
 }
