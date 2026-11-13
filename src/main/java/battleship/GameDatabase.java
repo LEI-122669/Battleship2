@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Armazena os jogos e as jogadas numa base de dados H2 (acedida por JDBC).
@@ -91,13 +92,17 @@ public class GameDatabase {
         try (Connection c = connect(); PreparedStatement ps = c.prepareStatement(sql)) {
             ps.setString(1, gameId);
             ps.setString(2, playerName);
-            ps.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            ps.setTimestamp(3, now());
             ps.executeUpdate();
             return true;
         } catch (SQLException e) {
             LOGGER.error("Erro ao gravar o jogo {}: {}", gameId, e.getMessage());
             return false;
         }
+    }
+
+    private static @NotNull Timestamp now() {
+        return new Timestamp(System.currentTimeMillis());
     }
 
     /**
@@ -112,7 +117,7 @@ public class GameDatabase {
     public boolean saveMove(String gameId, int moveNumber, List<IPosition> shots, List<IGame.ShotResult> results) {
         String sql = "INSERT INTO SHOTS (GAME_ID, MOVE_NUMBER, SHOT_INDEX, SHOT_ROW, SHOT_COLUMN, OUTCOME, CREATED_AT) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        Timestamp now = new Timestamp(System.currentTimeMillis());
+        Timestamp now = now();
         try (Connection c = connect(); PreparedStatement ps = c.prepareStatement(sql)) {
             for (int i = 0; i < shots.size(); i++) {
                 IPosition pos = shots.get(i);
@@ -145,7 +150,7 @@ public class GameDatabase {
         String sql = "UPDATE GAMES SET FINISHED_AT = ?, WINNER = ?, HITS = ?, SUNK_SHIPS = ?, "
                 + "REPEATED_SHOTS = ?, INVALID_SHOTS = ? WHERE ID = ?";
         try (Connection c = connect(); PreparedStatement ps = c.prepareStatement(sql)) {
-            ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            ps.setTimestamp(1, now());
             ps.setString(2, winner);
             ps.setInt(3, game.getHits());
             ps.setInt(4, game.getSunkShips());
@@ -206,16 +211,16 @@ public class GameDatabase {
     /**
      * Converte o resultado de um tiro no texto guardado na base de dados.
      *
-     * @param r resultado do tiro
+     * @param result resultado do tiro
      * @return INVALID, REPEATED, MISS, HIT ou SUNK
      */
-    static String outcomeOf(IGame.ShotResult r) {
-        if (r == null || !r.valid())
+    static String outcomeOf(IGame.ShotResult result) {
+        if (result == null || !result.valid())
             return "INVALID";
-        if (r.repeated())
+        if (result.repeated())
             return "REPEATED";
-        if (r.ship() == null)
+        if (result.ship() == null)
             return "MISS";
-        return r.sunk() ? "SUNK" : "HIT";
+        return result.sunk() ? "SUNK" : "HIT";
     }
 }

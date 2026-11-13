@@ -4,6 +4,7 @@ import org.apache.commons.lang3.time.StopWatch;
 
 public class MoveTimer {
 
+    private static final double MILLIS_PER_SECOND = 1000.0;
     private StopWatch stopWatch;
 
     public void start() {
@@ -11,8 +12,9 @@ public class MoveTimer {
     }
 
     public long stop() {
-        if (stopWatch == null || !stopWatch.isStarted()
-                || stopWatch.isStopped()) {
+        boolean notTiming = stopWatch == null || !stopWatch.isStarted()
+                || stopWatch.isStopped();
+        if (notTiming) {
             throw new IllegalStateException(
                     "No move is currently being timed.");
         }
@@ -22,7 +24,6 @@ public class MoveTimer {
     }
 
     public static String formatTime(long milliseconds) {
-        double seconds = milliseconds / 1000.0;
-        return String.format("%.2f seconds", seconds);
+        return String.format("%.2f seconds", milliseconds / MILLIS_PER_SECOND);
     }
 }
