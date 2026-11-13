@@ -1,7 +1,7 @@
 # 124109 Salvador
 version: "1.0"
 linter: jetbrains/qodana-jvm-community:2026.2
-projectJDK: "23"
+projectJDK: "21"
 
 profile:
   path: .qodana/profiles/profile-124109.yaml

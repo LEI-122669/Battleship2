@@ -277,15 +277,7 @@ public class Game implements IGame
 		// Criar uma instância de Random com uma seed baseada no timestamp atual
 		Random random = new Random(System.currentTimeMillis());
 
-		Set<IPosition> usablePositions = new HashSet<IPosition>();
-		for (int r = 0; r < BOARD_SIZE; r++)
-			for (int c = 0; c < BOARD_SIZE; c++)
-				usablePositions.add(new Position(r, c));
-
-		this.myFleet.getSunkShips().forEach(ship -> usablePositions.removeAll(ship.getAdjacentPositions()));
-		this.alienMoves.forEach(move ->  usablePositions.removeAll(move.getShots()));
-
-		List<IPosition> candidateShots = new ArrayList<>(usablePositions);
+		List<IPosition> candidateShots = new ArrayList<>(getUsablePositions());
 
 		// Criar lista para armazenar os tiros
 		List<IPosition> shots = new ArrayList<IPosition>();
@@ -318,6 +310,18 @@ public class Game implements IGame
 		this.fireShots(shots);
 
 		return Game.jsonShots(shots);
+	}
+
+	// Новий виділений метод (Extract Method)
+	private Set<IPosition> getUsablePositions() {
+		Set<IPosition> usablePositions = new HashSet<IPosition>();
+		for (int r = 0; r < BOARD_SIZE; r++)
+			for (int c = 0; c < BOARD_SIZE; c++)
+				usablePositions.add(new Position(r, c));
+
+		this.myFleet.getSunkShips().forEach(ship -> usablePositions.removeAll(ship.getAdjacentPositions()));
+		this.alienMoves.forEach(move ->  usablePositions.removeAll(move.getShots()));
+		return usablePositions;
 	}
 
 
@@ -386,7 +390,9 @@ public class Game implements IGame
 	 */
 	public void fireShots(List<IPosition> shots)
 	{
-		assert shots != null;
+		if (shots == null) {
+			throw new IllegalArgumentException("Shots list cannot be null.");
+		}
 
 		List<ShotResult> shotResults = new ArrayList<ShotResult>();
 		if (shots.size() != NUMBER_SHOTS) {
@@ -401,7 +407,6 @@ public class Game implements IGame
 
 		Move move = new Move(moveNumber, shots, shotResults);
 
-//		System.out.println(move);
 
 		move.processEnemyFire(true);
 
@@ -647,9 +652,12 @@ public class Game implements IGame
     moveTimer.start();
 }
 
+
+
 public long stopMoveTimer() {
     return moveTimer.stop();
 }
+
 
 
 }

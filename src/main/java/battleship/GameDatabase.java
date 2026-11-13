@@ -18,6 +18,7 @@ import org.apache.logging.log4j.Logger;
  * <p>
  * Se a base de dados falhar, o erro é registado no log e o jogo continua.
  */
+// 124109: configuração Checkstyle (ficha 3)
 public class GameDatabase {
 
     private static final Logger LOGGER = LogManager.getLogger();
