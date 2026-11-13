@@ -12,8 +12,9 @@ public class MoveTimer {
     }
 
     public long stop() {
-        if (stopWatch == null || !stopWatch.isStarted()
-                || stopWatch.isStopped()) {
+        boolean notTiming = stopWatch == null || !stopWatch.isStarted()
+                || stopWatch.isStopped();
+        if (notTiming) {
             throw new IllegalStateException(
                     "No move is currently being timed.");
         }
