@@ -211,16 +211,16 @@ public class GameDatabase {
     /**
      * Converte o resultado de um tiro no texto guardado na base de dados.
      *
-     * @param r resultado do tiro
+     * @param result resultado do tiro
      * @return INVALID, REPEATED, MISS, HIT ou SUNK
      */
-    static String outcomeOf(IGame.ShotResult r) {
-        if (r == null || !r.valid())
+    static String outcomeOf(IGame.ShotResult result) {
+        if (result == null || !result.valid())
             return "INVALID";
-        if (r.repeated())
+        if (result.repeated())
             return "REPEATED";
-        if (r.ship() == null)
+        if (result.ship() == null)
             return "MISS";
-        return r.sunk() ? "SUNK" : "HIT";
+        return result.sunk() ? "SUNK" : "HIT";
     }
 }
