@@ -128,18 +128,27 @@ public interface IShip
 	 */
 	void sink();
 
+	/**
+	 * Sets the ship's position.
+	 *
+	 * @param position the new position
+	 */
 	void setPosition(IPosition position);
 
+	/**
+	 * Gets the number of hits received.
+	 *
+	 * @return the hit count
+	 */
 	int getHits();
 
+	/**
+	 * Records one hit on the ship.
+	 */
 	void hit();
 
 
 
-	/*
-	  Is inside board boolean.
 
-	  @return the boolean
-	 */
 
 }
