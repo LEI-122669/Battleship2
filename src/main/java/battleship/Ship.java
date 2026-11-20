@@ -4,7 +4,6 @@
 package battleship;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -147,6 +146,7 @@ public abstract class Ship implements IShip
 		return positions;
     }
 
+
 	/**
 	 * Retrieves a list of positions adjacent to the ship's current positions.
 	 * Adjacent positions are defined as neighboring positions that are not
@@ -156,7 +156,7 @@ public abstract class Ship implements IShip
 	 */
 	public List<IPosition> getAdjacentPositions()
 	{
-		List<IPosition> adjacentPositions = new ArrayList<IPosition>();
+		List<IPosition> adjacentPositions = new ArrayList<>();
 		for (IPosition position : getPositions())
 		{
 			List<IPosition> adjacents = position.adjacentPositions();
@@ -242,10 +242,9 @@ public abstract class Ship implements IShip
     @Override
     public int getTopMostPos()
     {
-	int top = getPositions().get(0).getRow();
+	int top = getPositions().getFirst().getRow();
 	for (int i = 1; i < getSize(); i++)
-	    if (getPositions().get(i).getRow() < top)
-		top = getPositions().get(i).getRow();
+	    if (getPositions().get(i).getRow() < top) top = getPositions().get(i).getRow();
 	return top;
     }
 
@@ -262,7 +261,7 @@ public abstract class Ship implements IShip
     @Override
     public int getBottomMostPos()
     {
-	int bottom = getPositions().get(0).getRow();
+	int bottom = getPositions().getFirst().getRow();
 	for (int i = 1; i < getSize(); i++)
 	    if (getPositions().get(i).getRow() > bottom)
 			bottom = getPositions().get(i).getRow();
@@ -282,7 +281,7 @@ public abstract class Ship implements IShip
     @Override
     public int getLeftMostPos()
     {
-	int left = getPositions().get(0).getColumn();
+	int left = getPositions().getFirst().getColumn();
 	for (int i = 1; i < getSize(); i++)
 	    if (getPositions().get(i).getColumn() < left)
 			left = getPositions().get(i).getColumn();
@@ -302,10 +301,9 @@ public abstract class Ship implements IShip
     @Override
     public int getRightMostPos()
     {
-	int right = getPositions().get(0).getColumn();
+	int right = getPositions().getFirst().getColumn();
 	for (int i = 1; i < getSize(); i++)
-	    if (getPositions().get(i).getColumn() > right)
-		right = getPositions().get(i).getColumn();
+	    if (getPositions().get(i).getColumn() > right) right = getPositions().get(i).getColumn();
 	return right;
     }
 
@@ -347,10 +345,9 @@ public abstract class Ship implements IShip
     {
 		assert other != null;
 
-		Iterator<IPosition> otherPos = other.getPositions().iterator();
-		while (otherPos.hasNext())
-			if (tooCloseTo(otherPos.next()))
-				return true;
+        for (IPosition iPosition : other.getPositions())
+            if (tooCloseTo(iPosition))
+                return true;
 
 		return false;
     }

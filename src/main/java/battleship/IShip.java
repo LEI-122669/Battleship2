@@ -128,10 +128,6 @@ public interface IShip
 	 */
 	void sink();
 
-	/**
-	 * Is inside board boolean.
-	 *
-	 * @return the boolean
-	 */
+
 
 }

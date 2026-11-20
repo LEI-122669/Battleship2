@@ -5,6 +5,7 @@ package battleship;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The type Fleet.
@@ -41,7 +42,7 @@ public class Fleet implements IFleet
 		while (fleetSize < shipTypes.length) {
 
 			// Build the ship
-			Ship ship = Ship.buildShip(shipTypes[fleetSize], Compass.randomBearing(), Position.randomPosition());
+			IShip ship = Ship.buildShip(shipTypes[fleetSize], Compass.randomBearing(), Position.randomPosition());
 
 			// Attempt to add the ship to the fleet
 			if (ship != null && randomFleet.addShip(ship)) {
@@ -117,7 +118,7 @@ public class Fleet implements IFleet
     {
 		assert category != null;
 
-		List<IShip> shipsLike = new ArrayList<IShip>();
+		List<IShip> shipsLike = new ArrayList<>();
 		for (IShip s : ships)
 			if (s.getCategory().equals(category))
 				shipsLike.add(s);
@@ -138,7 +139,7 @@ public class Fleet implements IFleet
     @Override
     public List<IShip> getFloatingShips()
     {
-		List<IShip> floatingShips = new ArrayList<IShip>();
+		List<IShip> floatingShips = new ArrayList<>();
 		for (IShip s : ships)
 			if (s.stillFloating())
 				floatingShips.add(s);
@@ -159,7 +160,7 @@ public class Fleet implements IFleet
 	@Override
 	public List<IShip> getSunkShips()
 	{
-		List<IShip> sunkShips = new ArrayList<IShip>();
+		List<IShip> sunkShips = new ArrayList<>();
 		for (IShip s : ships)
 			if (!s.stillFloating())
 				sunkShips.add(s);
@@ -199,11 +200,10 @@ public class Fleet implements IFleet
     {
 		assert s != null;
 
-		for (int i = 0; i < ships.size(); i++)
-		{
-			if (ships.get(i).tooCloseTo(s))
-				return true;
-		}
+        for (IShip ship : ships) {
+            if (ship.tooCloseTo(s))
+                return true;
+        }
 		return false;
     }
 
@@ -212,12 +212,12 @@ public class Fleet implements IFleet
 	 *
 	 * @param ships The list of ships
 	 */
-	public void printShips(List<IShip> ships)
-	{
-		assert ships != null;
+	public void printShips(List<IShip> ships) {
+		Objects.requireNonNull(ships, "ships cannot be null");
 
-		for (IShip ship : ships)
+		for (IShip ship : ships) {
 			System.out.println(ship);
+		}
 	}
 
 	/**
