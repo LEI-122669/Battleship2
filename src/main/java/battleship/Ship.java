@@ -32,7 +32,6 @@ public abstract class Ship implements IShip
 	 * The constant BARCA.
 	 */
 	private static final String BARCA = "barca";
-    private int hits = 0;
 
 	/**
 	 * Create a new ship

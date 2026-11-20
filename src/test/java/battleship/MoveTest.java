@@ -37,12 +37,6 @@ class MoveTest {
             @Override public boolean isInsideBoard() { return true; }
             @Override public void shoot(IPosition pos) {}
             @Override public void sink() {}
-            @Override
-            public void setPosition(IPosition position) {}
-            @Override
-            public int getHits() { return 0; }
-            @Override
-            public void hit() {}
         };
     }
 
