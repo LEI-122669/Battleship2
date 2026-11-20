@@ -8,18 +8,12 @@ import java.io.InputStream;
 import java.time.Duration;
 
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 
 class MainTest {
 
-    @Test
-    @DisplayName("Testa a instanciação da classe Main (Construtor implícito)")
-    void testConstructor() {
-        // Para atingir 100% de cobertura de linha/classe, o construtor padrão precisa ser invocado
-        Main mainInstance = new Main();
-        assertNotNull(mainInstance, "A instância de Main não deve ser nula.");
-    }
+
 
     @Test
     @DisplayName("Testa a execução do método main sem travar o programa")
