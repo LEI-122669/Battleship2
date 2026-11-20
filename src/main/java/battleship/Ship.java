@@ -4,7 +4,6 @@
 package battleship;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -148,32 +147,7 @@ public abstract class Ship implements IShip
 		return positions;
     }
 
-	/**
-	 * Sets the ship's position.
-	 *
-	 * @param position the new position
-	 */
-	@Override
-	public void setPosition(IPosition position) {
-    }
 
-	/**
-	 * Gets the number of hits received.
-	 *
-	 * @return the number of hits received
-	 */
-	@Override
-	public int getHits() {
-		return hits;
-	}
-
-	/**
-	 * Records a hit on the ship.
-	 */
-	@Override
-	public void hit() {
-		hits++;
-	}
 	/**
 	 * Retrieves a list of positions adjacent to the ship's current positions.
 	 * Adjacent positions are defined as neighboring positions that are not
