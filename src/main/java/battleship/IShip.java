@@ -138,12 +138,12 @@ public interface IShip
 	/**
 	 * Gets the number of hits received.
 	 *
-	 * @return the hit count
+	 * @return the number of hits received
 	 */
 	int getHits();
 
 	/**
-	 * Records one hit on the ship.
+	 * Records a hit on the ship.
 	 */
 	void hit();
 
